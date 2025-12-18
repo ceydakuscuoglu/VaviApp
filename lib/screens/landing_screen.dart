@@ -165,13 +165,13 @@ class _LandingScreenState extends State<LandingScreen> {
   Color _getNodeTypeColor(String type) {
     switch (type.toLowerCase()) {
       case 'lab':
-        return Colors.purple;
+        return const Color(0xFF1B3C53); // Dark muted blue from palette
       case 'office':
-        return Colors.blue;
+        return const Color(0xFF234C6A); // Primary blue from palette
       case 'connection':
-        return Colors.green;
+        return const Color(0xFF456882); // Medium blue-grey from palette
       default:
-        return Colors.grey;
+        return const Color(0xFF456882); // Medium blue-grey from palette
     }
   }
 
@@ -254,7 +254,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                   'Choose your starting point and destination to find the shortest path',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                                       ),
                                 ),
                               ],

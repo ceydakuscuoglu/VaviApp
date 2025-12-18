@@ -333,9 +333,11 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: Colors.grey[100],
+              color: Theme.of(context).colorScheme.surface,
               border: Border(
-                top: BorderSide(color: Colors.grey[300]!),
+                top: BorderSide(
+                  color: Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3),
+                ),
               ),
             ),
             child: Column(
@@ -343,7 +345,10 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
               children: [
                 Row(
                   children: [
-                    Icon(Icons.directions, color: Colors.grey[700]),
+                    Icon(
+                      Icons.directions,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     const SizedBox(width: 8),
                     Text(
                       'Directions',
@@ -403,9 +408,9 @@ class _MapPainter extends CustomPainter {
       pathEdges.add('${path[i + 1]}_${path[i]}'); // Bidirectional
     }
 
-    // Draw all edges - non-path edges in darker grey for better visibility
+    // Draw all edges - non-path edges using palette color
     final edgePaint = Paint()
-      ..color = Colors.grey[600]!
+      ..color = const Color(0xFF456882).withOpacity(0.4) // Medium blue-grey from palette
       ..strokeWidth = 2.5
       ..style = PaintingStyle.stroke;
 
@@ -492,30 +497,30 @@ class _MapPainter extends CustomPainter {
             // Edge not found, use default
           }
 
-          // Choose color based on edge type - darker and more visible
+          // Choose color based on edge type - using palette colors
           Color pathColor;
           double strokeWidth;
           
           if (pathEdge != null) {
             switch (pathEdge.type.toLowerCase()) {
               case 'corridor':
-                pathColor = Colors.blue[700]!; // Darker blue
+                pathColor = const Color(0xFF234C6A); // Primary blue from palette
                 strokeWidth = 6;
                 break;
               case 'connection':
-                pathColor = Colors.green[700]!; // Darker green
+                pathColor = const Color(0xFF1B3C53); // Dark muted blue from palette
                 strokeWidth = 6;
                 break;
               case 'vertical_connection':
-                pathColor = Colors.orange[700]!; // Darker orange
+                pathColor = const Color(0xFF456882); // Medium blue-grey from palette
                 strokeWidth = 7;
                 break;
               default:
-                pathColor = Colors.blue[700]!; // Darker blue
+                pathColor = const Color(0xFF234C6A); // Primary blue from palette
                 strokeWidth = 6;
             }
           } else {
-            pathColor = Colors.blue[700]!; // Darker blue
+            pathColor = const Color(0xFF234C6A); // Primary blue from palette
             strokeWidth = 6;
           }
 
@@ -582,16 +587,16 @@ class _MapPainter extends CustomPainter {
       double nodeRadius;
 
       if (isSource) {
-        nodeColor = Colors.green;
+        nodeColor = const Color(0xFF1B3C53); // Dark muted blue from palette for source
         nodeRadius = 10;
       } else if (isTarget) {
-        nodeColor = Colors.red;
+        nodeColor = Colors.red[700]!; // Keep red for target (accessibility)
         nodeRadius = 10;
       } else if (isInPath) {
-        nodeColor = Colors.blue;
+        nodeColor = const Color(0xFF234C6A); // Primary blue from palette
         nodeRadius = 7;
       } else {
-        nodeColor = Colors.grey[500]!;
+        nodeColor = const Color(0xFF456882); // Medium blue-grey from palette for non-path nodes
         nodeRadius = 5;
       }
 
@@ -603,7 +608,7 @@ class _MapPainter extends CustomPainter {
 
       // Draw node outline
       final outlinePaint = Paint()
-        ..color = Colors.white
+        ..color = const Color(0xFFE3E3E3) // Light grey from palette
         ..strokeWidth = 2.5
         ..style = PaintingStyle.stroke;
 
@@ -648,7 +653,7 @@ class _MapPainter extends CustomPainter {
         
         // Draw text background
         final bgPaint = Paint()
-          ..color = Colors.white.withOpacity(0.9)
+          ..color = const Color(0xFFE3E3E3).withOpacity(0.95) // Light grey from palette
           ..style = PaintingStyle.fill;
         
         final bgRect = Rect.fromLTWH(
