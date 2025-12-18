@@ -29,7 +29,7 @@ class Edge {
       'type': type,
     };
   }
-
+  //dmsandf
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
