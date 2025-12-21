@@ -21,6 +21,8 @@ class _LandingScreenState extends State<LandingScreen> {
   List<Edge> _edges = [];
   Node? _selectedSourceNode;
   Node? _selectedTargetNode;
+  int? _selectedSourceFloor; // null means "all floors"
+  int? _selectedTargetFloor; // null means "all floors"
   bool _isLoading = false;
   bool _isLoadingData = true;
   String? _errorMessage;
@@ -28,26 +30,42 @@ class _LandingScreenState extends State<LandingScreen> {
   @override
   void initState() {
     super.initState();
-    _loadData();
+    // Start loading immediately but ensure UI renders first
+    Future.microtask(() {
+      _loadData();
+    });
   }
 
   /// Load nodes and edges from JSON files
   Future<void> _loadData() async {
+    // Ensure UI has rendered before starting heavy operations
+    await Future.delayed(const Duration(milliseconds: 100));
+    
+    if (!mounted) return;
+    
+    setState(() {
+      _isLoadingData = true;
+      _errorMessage = null;
+    });
+
     try {
-      final nodes = await DataLoaderService.loadNodes();
-      final edges = await DataLoaderService.loadEdges();
+      // Load both in parallel for better performance
+      final results = await Future.wait([
+        DataLoaderService.loadNodes(),
+        DataLoaderService.loadEdges(),
+      ]);
 
       if (mounted) {
         setState(() {
-          _availableNodes = nodes;
-          _edges = edges;
+          _availableNodes = results[0] as List<Node>;
+          _edges = results[1] as List<Edge>;
           _isLoadingData = false;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = 'Failed to load map data: $e';
+          _errorMessage = 'Failed to load map data: ${e.toString()}';
           _isLoadingData = false;
         });
       }
@@ -175,9 +193,75 @@ class _LandingScreenState extends State<LandingScreen> {
     }
   }
 
+  /// Get list of available floors from nodes
+  List<int> _getAvailableFloors() {
+    final floors = _availableNodes
+        .where((node) => 
+            node.type.toLowerCase() != 'corridor' && 
+            node.type.toLowerCase() != 'connection')
+        .map((node) => node.floor)
+        .toSet()
+        .toList();
+    floors.sort();
+    return floors;
+  }
+
+  /// Get filtered nodes based on floor filter and type filter
+  List<Node> _getFilteredNodes(int? floorFilter) {
+    return _availableNodes.where((node) {
+      // Filter out corridors and connections
+      if (node.type.toLowerCase() == 'corridor' || 
+          node.type.toLowerCase() == 'connection') {
+        return false;
+      }
+      // Filter by floor if a floor is selected
+      if (floorFilter != null && node.floor != floorFilter) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
+  /// Handle source floor filter change
+  void _onSourceFloorFilterChanged(int? floor) {
+    setState(() {
+      _selectedSourceFloor = floor;
+      
+      // Clear source selection if it's not on the selected floor
+      if (_selectedSourceNode != null && 
+          floor != null && 
+          _selectedSourceNode!.floor != floor) {
+        _selectedSourceNode = null;
+      }
+      
+      if (floor != null) {
+        HapticFeedback.lightImpact();
+      }
+    });
+  }
+
+  /// Handle target floor filter change
+  void _onTargetFloorFilterChanged(int? floor) {
+    setState(() {
+      _selectedTargetFloor = floor;
+      
+      // Clear target selection if it's not on the selected floor
+      if (_selectedTargetNode != null && 
+          floor != null && 
+          _selectedTargetNode!.floor != floor) {
+        _selectedTargetNode = null;
+      }
+      
+      if (floor != null) {
+        HapticFeedback.lightImpact();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text(
           'VAVI Navigation',
@@ -188,13 +272,20 @@ class _LandingScreenState extends State<LandingScreen> {
         elevation: 0,
       ),
       body: _isLoadingData
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Loading map data...'),
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading map data...',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ],
               ),
             )
@@ -269,6 +360,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           label: 'From',
                           icon: Icons.location_on,
                           selectedNode: _selectedSourceNode,
+                          floorFilter: _selectedSourceFloor,
                           onNodeChanged: (Node? node) {
                             setState(() {
                               _selectedSourceNode = node;
@@ -277,6 +369,7 @@ class _LandingScreenState extends State<LandingScreen> {
                               HapticFeedback.lightImpact();
                             }
                           },
+                          onFloorFilterChanged: _onSourceFloorFilterChanged,
                         ),
 
                         const SizedBox(height: 20),
@@ -311,6 +404,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           label: 'To',
                           icon: Icons.place,
                           selectedNode: _selectedTargetNode,
+                          floorFilter: _selectedTargetFloor,
                           onNodeChanged: (Node? node) {
                             setState(() {
                               _selectedTargetNode = node;
@@ -319,6 +413,7 @@ class _LandingScreenState extends State<LandingScreen> {
                               HapticFeedback.lightImpact();
                             }
                           },
+                          onFloorFilterChanged: _onTargetFloorFilterChanged,
                         ),
 
                         const SizedBox(height: 32),
@@ -382,6 +477,8 @@ class _LandingScreenState extends State<LandingScreen> {
     required IconData icon,
     required Node? selectedNode,
     required ValueChanged<Node?> onNodeChanged,
+    int? floorFilter,
+    required ValueChanged<int?> onFloorFilterChanged,
   }) {
     return Semantics(
       label: '$label dropdown',
@@ -410,9 +507,15 @@ class _LandingScreenState extends State<LandingScreen> {
                 ],
               ),
               const SizedBox(height: 12),
+              // Floor Filter for this selector
+              _buildInlineFloorFilter(
+                floorFilter: floorFilter,
+                onFloorFilterChanged: onFloorFilterChanged,
+              ),
+              const SizedBox(height: 12),
               DropdownMenu<Node>(
                 initialSelection: selectedNode,
-                dropdownMenuEntries: _availableNodes
+                dropdownMenuEntries: _getFilteredNodes(floorFilter)
                     .map((node) => DropdownMenuEntry<Node>(
                           value: node,
                           label: node.name,
@@ -470,6 +573,59 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  /// Build inline floor filter widget (compact version for node selector)
+  Widget _buildInlineFloorFilter({
+    int? floorFilter,
+    required ValueChanged<int?> onFloorFilterChanged,
+  }) {
+    final availableFloors = _getAvailableFloors();
+    
+    return Row(
+      children: [
+        Icon(
+          Icons.layers,
+          size: 18,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          'Floor:',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: DropdownMenu<int?>(
+            initialSelection: floorFilter,
+            dropdownMenuEntries: [
+              const DropdownMenuEntry<int?>(
+                value: null,
+                label: 'All Floors',
+              ),
+              ...availableFloors.map((floor) => DropdownMenuEntry<int?>(
+                    value: floor,
+                    label: 'Floor $floor',
+                  )),
+            ],
+            onSelected: onFloorFilterChanged,
+            textStyle: const TextStyle(fontSize: 14),
+            menuStyle: MenuStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.white),
+              elevation: WidgetStateProperty.all(4),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            hintText: 'All Floors',
+          ),
+        ),
+      ],
     );
   }
 }

@@ -5,6 +5,25 @@ import '../models/node.dart';
 import '../models/edge.dart';
 import '../services/path_finder_service.dart';
 
+/// Floor segment data structure
+class FloorSegment {
+  final int floor;
+  final List<String> pathSegment;
+  final Node? elevatorEntry; // Elevator node where we enter this floor
+  final Node? elevatorExit; // Elevator node where we exit this floor
+  final Node? startNode; // First node on this floor
+  final Node? endNode; // Last node on this floor
+
+  FloorSegment({
+    required this.floor,
+    required this.pathSegment,
+    this.elevatorEntry,
+    this.elevatorExit,
+    this.startNode,
+    this.endNode,
+  });
+}
+
 /// Screen for visualizing the floor map and shortest path
 class PathVisualizationScreen extends StatefulWidget {
   final List<Node> nodes;
@@ -75,7 +94,21 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
             edgeTypeDescription = 'via connection';
             break;
           case 'vertical_connection':
-            edgeTypeDescription = 'via elevator/stairs';
+            // Check if it's an elevator or staircase
+            final sourceNode = pathFinder.getNodeById(widget.path[i]);
+            final targetNode = pathFinder.getNodeById(widget.path[i + 1]);
+            final isElevator = (sourceNode?.type.toLowerCase() == 'elevator') ||
+                              (targetNode?.type.toLowerCase() == 'elevator');
+            final isStaircase = (sourceNode?.type.toLowerCase() == 'staircase') ||
+                               (targetNode?.type.toLowerCase() == 'staircase');
+            
+            if (isElevator) {
+              edgeTypeDescription = 'via elevator';
+            } else if (isStaircase) {
+              edgeTypeDescription = 'via stairs';
+            } else {
+              edgeTypeDescription = 'via elevator/stairs';
+            }
             break;
           default:
             edgeTypeDescription = '';
@@ -113,6 +146,76 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
     // If path is on single floor, filter to that floor
     // Otherwise show all floors in path
     return widget.nodes.where((node) => pathFloors.contains(node.floor)).toList();
+  }
+
+  /// Split path into floor segments
+  List<FloorSegment> _splitPathByFloors() {
+    final pathFinder = PathFinderService(
+      nodes: widget.nodes,
+      edges: widget.edges,
+    );
+
+    if (widget.path.isEmpty) return [];
+
+    final segments = <FloorSegment>[];
+    int currentFloor = -1;
+    List<String> currentSegment = [];
+    Node? elevatorEntry;
+    Node? segmentStart;
+
+    for (int i = 0; i < widget.path.length; i++) {
+      final node = pathFinder.getNodeById(widget.path[i]);
+      if (node == null) continue;
+
+      // If floor changed, save previous segment and start new one
+      if (currentFloor != -1 && node.floor != currentFloor) {
+        // Find the elevator/vertical connection node
+        final lastNodeInPrevFloor = pathFinder.getNodeById(currentSegment.last);
+        final firstNodeInNewFloor = node;
+
+        if (currentSegment.isNotEmpty && lastNodeInPrevFloor != null) {
+          segments.add(FloorSegment(
+            floor: currentFloor,
+            pathSegment: List.from(currentSegment),
+            elevatorExit: lastNodeInPrevFloor,
+            startNode: segmentStart,
+            endNode: lastNodeInPrevFloor,
+          ));
+        }
+
+        // Start new segment
+        currentFloor = node.floor;
+        currentSegment = [widget.path[i]];
+        elevatorEntry = firstNodeInNewFloor;
+        segmentStart = firstNodeInNewFloor;
+      } else {
+        // Same floor, continue segment
+        if (currentFloor == -1) {
+          currentFloor = node.floor;
+          segmentStart = node;
+        }
+        currentSegment.add(widget.path[i]);
+      }
+    }
+
+    // Add the last segment
+    if (currentSegment.isNotEmpty) {
+      final lastNode = pathFinder.getNodeById(currentSegment.last);
+      segments.add(FloorSegment(
+        floor: currentFloor,
+        pathSegment: List.from(currentSegment),
+        elevatorEntry: elevatorEntry,
+        startNode: segmentStart,
+        endNode: lastNode,
+      ));
+    }
+
+    return segments;
+  }
+
+  /// Get nodes and edges for a specific floor
+  List<Node> _getNodesForFloor(int floor) {
+    return widget.nodes.where((node) => node.floor == floor).toList();
   }
 
   /// Get edges connecting relevant nodes
@@ -164,8 +267,8 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
   }
 
   /// Convert world coordinates to screen coordinates (with 90-degree rotation)
-  Offset _worldToScreen(double x, double y, Size canvasSize, Map<String, double> bounds) {
-    final padding = 40.0;
+  Offset _worldToScreen(double x, double y, Size canvasSize, Map<String, double> bounds, {double padding = 20.0}) {
+    // Reduce padding to minimize empty space around graph
     final width = math.max(1.0, canvasSize.width - 2 * padding);
     final height = math.max(1.0, canvasSize.height - 2 * padding);
 
@@ -201,12 +304,12 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final bounds = _calculateBounds();
     final pathFinder = PathFinderService(
       nodes: widget.nodes,
       edges: widget.edges,
     );
     final totalDistance = pathFinder.getPathDistance(widget.path);
+    final floorSegments = _splitPathByFloors();
 
     return Scaffold(
       appBar: AppBar(
@@ -262,6 +365,7 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
                         '${widget.sourceNode.name} → ${widget.targetNode.name}',
                         style: Theme.of(context).textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onPrimaryContainer,
                             ),
                       ),
                     ),
@@ -273,28 +377,47 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
                     Icon(
                       Icons.straighten,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       'Distance: ${totalDistance.toStringAsFixed(1)} meters',
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                         fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(width: 16),
                     Icon(
                       Icons.stairs,
                       size: 16,
-                      color: Colors.grey[600],
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
                     const SizedBox(width: 4),
                     Text(
                       'Steps: ${widget.path.length - 1}',
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
                         fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Icon(
+                      Icons.layers,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      floorSegments.length > 1 
+                          ? 'Floors: ${floorSegments.length}'
+                          : 'Floor: ${widget.sourceNode.floor}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -303,29 +426,11 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
             ),
           ),
 
-          // Map Visualization
+          // Multi-floor visualization or single floor
           Expanded(
-            child: InteractiveViewer(
-              transformationController: _transformationController,
-              minScale: 0.5,
-              maxScale: 4.0,
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  return CustomPaint(
-                    size: Size(constraints.maxWidth, constraints.maxHeight),
-                    painter: _MapPainter(
-                      nodes: _getRelevantNodes(),
-                      edges: _getRelevantEdges(),
-                      path: widget.path,
-                      sourceNode: widget.sourceNode,
-                      targetNode: widget.targetNode,
-                      worldToScreen: (x, y, canvasSize) =>
-                          _worldToScreen(x, y, canvasSize, bounds),
-                    ),
-                  );
-                },
-              ),
-            ),
+            child: floorSegments.length > 1
+                ? _buildMultiFloorVisualization(floorSegments)
+                : _buildSingleFloorVisualization(),
           ),
 
           // Path Description
@@ -366,8 +471,9 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
                       _getPathDescription(),
                       style: TextStyle(
                         fontSize: 13,
-                        color: Colors.grey[800],
+                        color: Theme.of(context).colorScheme.onSurface,
                         height: 1.5,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
@@ -378,6 +484,365 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
         ],
       ),
     );
+  }
+
+  /// Build single floor visualization (rotated 90 degrees horizontally)
+  Widget _buildSingleFloorVisualization() {
+    return Container(
+      width: double.infinity,
+      color: Theme.of(context).colorScheme.surface,
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // After rotation: height becomes width, width becomes height
+          // We want to fill screen width, so before rotation height = screenWidth
+          // We want to use ALL available height with minimal gaps
+          final screenWidth = MediaQuery.of(context).size.width;
+          final containerHeight = constraints.maxHeight.isFinite 
+              ? constraints.maxHeight 
+              : MediaQuery.of(context).size.height * 0.6;
+          
+          // Use the full container height to minimize gaps
+          // After rotation: width becomes height, so we set width to containerHeight
+          return SizedBox(
+            height: screenWidth, // Becomes horizontal width after rotation (fills screen)
+            width: containerHeight, // Becomes vertical height after rotation (uses full container)
+            child: RotatedBox(
+              quarterTurns: 1, // Rotate 90 degrees clockwise
+              child: InteractiveViewer(
+                transformationController: _transformationController,
+                minScale: 0.5,
+                maxScale: 4.0,
+                child: LayoutBuilder(
+                  builder: (context, rotatedConstraints) {
+                    final bounds = _calculateBounds();
+                    // Use minimal padding for single floor to maximize graph size
+                    return CustomPaint(
+                      size: Size(rotatedConstraints.maxWidth, rotatedConstraints.maxHeight),
+                      painter: _MapPainter(
+                        nodes: _getRelevantNodes(),
+                        edges: _getRelevantEdges(),
+                        path: widget.path,
+                        sourceNode: widget.sourceNode,
+                        targetNode: widget.targetNode,
+                        worldToScreen: (x, y, canvasSize) =>
+                            _worldToScreen(x, y, canvasSize, bounds, padding: 5.0),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  /// Build multi-floor visualization with separate graphs
+  /// Only shows source floor (first) and target floor (last), skipping intermediate floors
+  Widget _buildMultiFloorVisualization(List<FloorSegment> segments) {
+    // Only show first (source) and last (target) floor segments
+    final filteredSegments = <FloorSegment>[];
+    if (segments.isNotEmpty) {
+      filteredSegments.add(segments.first); // Source floor
+      if (segments.length > 1 && segments.last.floor != segments.first.floor) {
+        filteredSegments.add(segments.last); // Target floor (only if different from source)
+      }
+    }
+    
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch to fill width
+          children: [
+            for (int index = 0; index < filteredSegments.length; index++)
+              Flexible(
+                child: _buildFloorCard(
+                  filteredSegments[index],
+                  index,
+                  filteredSegments,
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Build a single floor card
+  Widget _buildFloorCard(
+    FloorSegment segment,
+    int index,
+    List<FloorSegment> allSegments,
+  ) {
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.zero,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: index == 0 
+            ? const BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+              )
+            : (index == allSegments.length - 1
+                ? const BorderRadius.only(
+                    bottomLeft: Radius.circular(12),
+                    bottomRight: Radius.circular(12),
+                  )
+                : BorderRadius.zero),
+        boxShadow: index == 0 || index == allSegments.length - 1
+            ? [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ]
+            : null,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // Floor header
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.secondaryContainer,
+              borderRadius: index == 0
+                  ? const BorderRadius.only(
+                      topLeft: Radius.circular(12),
+                      topRight: Radius.circular(12),
+                    )
+                  : BorderRadius.zero,
+            ),
+            margin: EdgeInsets.zero,
+            child: Row(
+              children: [
+                Icon(
+                  Icons.layers,
+                  color: Theme.of(context).colorScheme.onSecondaryContainer,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    'Floor ${segment.floor}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    ),
+                  ),
+                ),
+                if (segment.elevatorEntry != null) ...[
+                  Icon(
+                    Icons.arrow_downward,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      'Enter: ${segment.elevatorEntry!.name}',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                ],
+                if (segment.elevatorExit != null) ...[
+                  Icon(
+                    Icons.arrow_upward,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      'Exit: ${segment.elevatorExit!.name}',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Theme.of(context).colorScheme.onSecondaryContainer,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          
+          // Floor graph visualization - rotated 90 degrees for vertical display
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              color: Theme.of(context).colorScheme.surface,
+              margin: EdgeInsets.zero,
+              padding: EdgeInsets.zero,
+              child: LayoutBuilder(
+                builder: (context, cardConstraints) {
+                  // After rotation: height becomes width, width becomes height
+                  // We want to fill screen width, so before rotation height = screenWidth
+                  // We want to use available height, so before rotation width = available height
+                  final screenWidth = MediaQuery.of(context).size.width;
+                  final availableHeight = cardConstraints.maxHeight;
+                  
+                  return SizedBox(
+                    height: screenWidth, // Becomes horizontal width after rotation (fills screen)
+                    width: availableHeight, // Becomes vertical height after rotation (uses available space)
+                    child: RotatedBox(
+                      quarterTurns: 1, // Rotate 90 degrees clockwise
+                      child: _buildFloorVisualization(segment),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build elevator connection widget between floors
+  Widget _buildElevatorConnection(FloorSegment fromSegment, FloorSegment toSegment) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.tertiaryContainer,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.elevator,
+            size: 32,
+            color: Theme.of(context).colorScheme.onTertiaryContainer,
+          ),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Take elevator from Floor ${fromSegment.floor} to Floor ${toSegment.floor}',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                '${fromSegment.elevatorExit!.name} → ${toSegment.elevatorEntry!.name}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Theme.of(context).colorScheme.onTertiaryContainer,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// Build visualization for a single floor segment
+  Widget _buildFloorVisualization(FloorSegment segment) {
+    final pathFinder = PathFinderService(
+      nodes: widget.nodes,
+      edges: widget.edges,
+    );
+    
+    // Get nodes for this floor
+    final floorNodes = _getNodesForFloor(segment.floor);
+    
+    // Get edges for this floor
+    final floorNodeIds = floorNodes.map((n) => n.id).toSet();
+    final floorEdges = widget.edges.where((edge) {
+      return floorNodeIds.contains(edge.source) && 
+             floorNodeIds.contains(edge.target);
+    }).toList();
+    
+    // Calculate bounds for this floor
+    final bounds = _calculateBoundsForNodes(floorNodes);
+    
+    // Determine source and target nodes for this segment
+    final segmentSource = segment.startNode ?? pathFinder.getNodeById(segment.pathSegment.first);
+    final segmentTarget = segment.endNode ?? pathFinder.getNodeById(segment.pathSegment.last);
+    
+    return SizedBox.expand(
+      child: InteractiveViewer(
+        minScale: 0.5,
+        maxScale: 4.0,
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return CustomPaint(
+              size: Size(constraints.maxWidth, constraints.maxHeight),
+              painter: _MapPainter(
+                nodes: floorNodes,
+                edges: floorEdges,
+                path: segment.pathSegment,
+                sourceNode: segmentSource ?? widget.sourceNode,
+                targetNode: segmentTarget ?? widget.targetNode,
+                worldToScreen: (x, y, canvasSize) =>
+                    _worldToScreen(x, y, canvasSize, bounds),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  /// Calculate bounds for specific nodes
+  Map<String, double> _calculateBoundsForNodes(List<Node> nodes) {
+    if (nodes.isEmpty) {
+      return {'minX': 0, 'maxX': 100, 'minY': 0, 'maxY': 100};
+    }
+
+    // Calculate bounds with rotated coordinates (swap X and Y, flip Y)
+    // This matches the rotation applied in _worldToScreen
+    double minX = double.infinity;
+    double maxX = double.negativeInfinity;
+    double minY = double.infinity;
+    double maxY = double.negativeInfinity;
+
+    for (final node in nodes) {
+      if (node.pos.length >= 2) {
+        // Apply 90-degree clockwise rotation: (x, y) -> (y, -x)
+        final rotatedX = node.pos[1];
+        final rotatedY = -node.pos[0];
+        
+        minX = math.min(minX, rotatedX);
+        maxX = math.max(maxX, rotatedX);
+        minY = math.min(minY, rotatedY);
+        maxY = math.max(maxY, rotatedY);
+      }
+    }
+
+    // Add padding
+    // Minimal padding to reduce empty space
+    final padding = 5.0;
+    return {
+      'minX': minX - padding,
+      'maxX': maxX + padding,
+      'minY': minY - padding,
+      'maxY': maxY + padding,
+    };
   }
 }
 
@@ -626,13 +1091,14 @@ class _MapPainter extends CustomPainter {
           text: TextSpan(
             text: cleanName,
             style: const TextStyle(
-              color: Colors.black87,
+              color: Color(0xFF1B3C53), // Dark blue from palette for better contrast
               fontSize: 11,
               fontWeight: FontWeight.bold,
               shadows: [
                 Shadow(
                   color: Colors.white,
-                  blurRadius: 3,
+                  blurRadius: 2,
+                  offset: Offset(0, 0),
                 ),
               ],
             ),
@@ -651,10 +1117,16 @@ class _MapPainter extends CustomPainter {
         final clampedX = math.max(4.0, math.min(size.width - textPainter.width - 4.0, textX)).toDouble();
         final clampedY = math.max(4.0, math.min(size.height - textPainter.height - 4.0, textY)).toDouble();
         
-        // Draw text background
+        // Draw text background with better contrast
         final bgPaint = Paint()
-          ..color = const Color(0xFFE3E3E3).withOpacity(0.95) // Light grey from palette
+          ..color = Colors.white.withOpacity(0.95) // White background for better contrast
           ..style = PaintingStyle.fill;
+        
+        // Draw border for better visibility
+        final borderPaint = Paint()
+          ..color = const Color(0xFF1B3C53).withOpacity(0.3) // Dark blue border
+          ..style = PaintingStyle.stroke
+          ..strokeWidth = 1;
         
         final bgRect = Rect.fromLTWH(
           clampedX - 4,
@@ -666,9 +1138,16 @@ class _MapPainter extends CustomPainter {
         // Only draw if within bounds
         if (bgRect.left >= 0 && bgRect.top >= 0 && 
             bgRect.right <= size.width && bgRect.bottom <= size.height) {
+          // Draw background
           canvas.drawRRect(
             RRect.fromRectAndRadius(bgRect, const Radius.circular(4)),
             bgPaint,
+          );
+          
+          // Draw border
+          canvas.drawRRect(
+            RRect.fromRectAndRadius(bgRect, const Radius.circular(4)),
+            borderPaint,
           );
           
           // Draw text
