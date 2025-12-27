@@ -5,6 +5,8 @@ import '../models/edge.dart';
 import '../services/data_loader_service.dart';
 import '../services/path_finder_service.dart';
 import 'path_visualization_screen.dart';
+import 'camera_location_screen.dart';
+import 'api_key_setup_screen.dart';
 
 /// Landing screen for VAVI app - Initial navigation setup screen
 /// 
@@ -258,6 +260,40 @@ class _LandingScreenState extends State<LandingScreen> {
     });
   }
 
+  /// Open camera screen to find location
+  Future<void> _findMyLocation() async {
+    HapticFeedback.mediumImpact();
+    
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraLocationScreen(
+          availableNodes: _availableNodes,
+        ),
+      ),
+    );
+
+    if (result != null && result is Node) {
+      setState(() {
+        _selectedSourceNode = result;
+      });
+      
+      HapticFeedback.heavyImpact();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Location detected: ${result.name}'),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -270,6 +306,20 @@ class _LandingScreenState extends State<LandingScreen> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            tooltip: 'API Key Settings',
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ApiKeySetupScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: _isLoadingData
           ? Center(
@@ -370,6 +420,7 @@ class _LandingScreenState extends State<LandingScreen> {
                             }
                           },
                           onFloorFilterChanged: _onSourceFloorFilterChanged,
+                          onFindLocation: _findMyLocation,
                         ),
 
                         const SizedBox(height: 20),
@@ -479,6 +530,7 @@ class _LandingScreenState extends State<LandingScreen> {
     required ValueChanged<Node?> onNodeChanged,
     int? floorFilter,
     required ValueChanged<int?> onFloorFilterChanged,
+    VoidCallback? onFindLocation,
   }) {
     return Semantics(
       label: '$label dropdown',
@@ -513,6 +565,31 @@ class _LandingScreenState extends State<LandingScreen> {
                 onFloorFilterChanged: onFloorFilterChanged,
               ),
               const SizedBox(height: 12),
+              // Find My Location button (only for source node)
+              if (onFindLocation != null) ...[
+                Semantics(
+                  button: true,
+                  label: 'Find my location using camera',
+                  hint: 'Double tap to open camera and detect your current location',
+                  child: OutlinedButton.icon(
+                    onPressed: onFindLocation,
+                    icon: const Icon(Icons.camera_alt),
+                    label: const Text('Find My Location'),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Theme.of(context).colorScheme.primary,
+                      side: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 2,
+                      ),
+                      minimumSize: const Size(double.infinity, 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+              ],
               DropdownMenu<Node>(
                 initialSelection: selectedNode,
                 dropdownMenuEntries: _getFilteredNodes(floorFilter)

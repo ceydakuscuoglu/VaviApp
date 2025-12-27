@@ -38,5 +38,35 @@ class DataLoaderService {
       throw Exception('Failed to load edges: $e');
     }
   }
+
+  /// Search for nodes by name containing the given text (case-insensitive)
+  /// 
+  /// Returns the first matching node, or null if no match is found
+  static Node? findNodeByName(List<Node> nodes, String searchText) {
+    if (searchText.isEmpty) {
+      return null;
+    }
+    
+    // Normalize search text (uppercase, remove spaces/hyphens for flexible matching)
+    final normalizedSearch = searchText.toUpperCase().replaceAll(RegExp(r'[\s-]'), '');
+    
+    // First, try exact substring match (case-insensitive)
+    for (final node in nodes) {
+      final normalizedName = node.name.toUpperCase();
+      if (normalizedName.contains(searchText.toUpperCase())) {
+        return node;
+      }
+    }
+    
+    // If no exact match, try normalized matching (removing spaces/hyphens)
+    for (final node in nodes) {
+      final normalizedName = node.name.toUpperCase().replaceAll(RegExp(r'[\s-]'), '');
+      if (normalizedName.contains(normalizedSearch)) {
+        return node;
+      }
+    }
+    
+    return null;
+  }
 }
 
