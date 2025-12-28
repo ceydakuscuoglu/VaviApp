@@ -4,9 +4,9 @@ import '../models/node.dart';
 import '../models/edge.dart';
 import '../services/data_loader_service.dart';
 import '../services/path_finder_service.dart';
+import '../services/voice_input_service.dart';
 import 'path_visualization_screen.dart';
 import 'camera_location_screen.dart';
-import 'api_key_setup_screen.dart';
 
 /// Landing screen for VAVI app - Initial navigation setup screen
 /// 
@@ -28,6 +28,12 @@ class _LandingScreenState extends State<LandingScreen> {
   bool _isLoading = false;
   bool _isLoadingData = true;
   String? _errorMessage;
+  
+  // Voice input
+  final VoiceInputService _voiceInputService = VoiceInputService();
+  bool _isListeningSource = false;
+  bool _isListeningTarget = false;
+  String? _recognizedText;
 
   @override
   void initState() {
@@ -35,7 +41,19 @@ class _LandingScreenState extends State<LandingScreen> {
     // Start loading immediately but ensure UI renders first
     Future.microtask(() {
       _loadData();
+      _initializeVoiceInput();
     });
+  }
+
+  /// Initialize voice input service
+  Future<void> _initializeVoiceInput() async {
+    await _voiceInputService.initialize();
+  }
+
+  @override
+  void dispose() {
+    _voiceInputService.dispose();
+    super.dispose();
   }
 
   /// Load nodes and edges from JSON files
@@ -294,6 +312,166 @@ class _LandingScreenState extends State<LandingScreen> {
     }
   }
 
+  /// Handle voice input for source node
+  Future<void> _handleVoiceInputSource() async {
+    if (_isListeningSource || _isListeningTarget) {
+      await _voiceInputService.stopListening();
+      setState(() {
+        _isListeningSource = false;
+        _isListeningTarget = false;
+        _recognizedText = null;
+      });
+      return;
+    }
+
+    HapticFeedback.mediumImpact();
+
+    // Check permission
+    if (!await _voiceInputService.hasPermission()) {
+      final granted = await _voiceInputService.requestPermission();
+      if (!granted) {
+        _showError('Microphone permission is required for voice input');
+        return;
+      }
+    }
+
+
+    setState(() {
+      _isListeningSource = true;
+      _recognizedText = null;
+    });
+
+    try {
+      final recognizedText = await _voiceInputService.startListening(
+        localeId: 'en_US',
+        listenDuration: const Duration(seconds: 15),
+      );
+
+      if (mounted) {
+        setState(() {
+          _isListeningSource = false;
+          _recognizedText = recognizedText;
+        });
+
+        if (recognizedText != null && recognizedText.isNotEmpty) {
+          // Show what was recognized for debugging
+          print('Recognized text: $recognizedText');
+          
+          // Find matching node
+          final matchedNode = _voiceInputService.findMatchingNode(
+            recognizedText,
+            _getFilteredNodes(_selectedSourceFloor),
+          );
+
+          if (matchedNode != null) {
+            setState(() {
+              _selectedSourceNode = matchedNode;
+            });
+            HapticFeedback.heavyImpact();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Selected: ${matchedNode.name}'),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else {
+            _showError('Could not find location "$recognizedText". Please try speaking the room number clearly (e.g., "A114").');
+          }
+        } else {
+          _showError('No speech detected. Please try again.');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isListeningSource = false;
+        });
+        _showError('Voice input error: ${e.toString()}');
+      }
+    }
+  }
+
+  /// Handle voice input for target node
+  Future<void> _handleVoiceInputTarget() async {
+    if (_isListeningSource || _isListeningTarget) {
+      await _voiceInputService.stopListening();
+      setState(() {
+        _isListeningSource = false;
+        _isListeningTarget = false;
+        _recognizedText = null;
+      });
+      return;
+    }
+
+    HapticFeedback.mediumImpact();
+
+    // Check permission
+    if (!await _voiceInputService.hasPermission()) {
+      final granted = await _voiceInputService.requestPermission();
+      if (!granted) {
+        _showError('Microphone permission is required for voice input');
+        return;
+      }
+    }
+
+    setState(() {
+      _isListeningTarget = true;
+      _recognizedText = null;
+    });
+
+    try {
+      final recognizedText = await _voiceInputService.startListening(
+        localeId: 'en_US',
+        listenDuration: const Duration(seconds: 15),
+      );
+
+      if (mounted) {
+        setState(() {
+          _isListeningTarget = false;
+          _recognizedText = recognizedText;
+        });
+
+        if (recognizedText != null && recognizedText.isNotEmpty) {
+          // Find matching node
+          final matchedNode = _voiceInputService.findMatchingNode(
+            recognizedText,
+            _getFilteredNodes(_selectedTargetFloor),
+          );
+
+          if (matchedNode != null) {
+            setState(() {
+              _selectedTargetNode = matchedNode;
+            });
+            HapticFeedback.heavyImpact();
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Selected: ${matchedNode.name}'),
+                duration: const Duration(seconds: 2),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                backgroundColor: Colors.green,
+              ),
+            );
+          } else {
+            _showError('Could not find location "$recognizedText". Please try again.');
+          }
+        } else {
+          _showError('No speech detected. Please try again.');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isListeningTarget = false;
+        });
+        _showError('Voice input error: ${e.toString()}');
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -306,20 +484,6 @@ class _LandingScreenState extends State<LandingScreen> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            tooltip: 'API Key Settings',
-            onPressed: () async {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ApiKeySetupScreen(),
-                ),
-              );
-            },
-          ),
-        ],
       ),
       body: _isLoadingData
           ? Center(
@@ -421,6 +585,9 @@ class _LandingScreenState extends State<LandingScreen> {
                           },
                           onFloorFilterChanged: _onSourceFloorFilterChanged,
                           onFindLocation: _findMyLocation,
+                          onVoiceInput: _handleVoiceInputSource,
+                          isListening: _isListeningSource,
+                          recognizedText: _isListeningSource ? _recognizedText : null,
                         ),
 
                         const SizedBox(height: 20),
@@ -465,6 +632,9 @@ class _LandingScreenState extends State<LandingScreen> {
                             }
                           },
                           onFloorFilterChanged: _onTargetFloorFilterChanged,
+                          onVoiceInput: _handleVoiceInputTarget,
+                          isListening: _isListeningTarget,
+                          recognizedText: _isListeningTarget ? _recognizedText : null,
                         ),
 
                         const SizedBox(height: 32),
@@ -531,6 +701,9 @@ class _LandingScreenState extends State<LandingScreen> {
     int? floorFilter,
     required ValueChanged<int?> onFloorFilterChanged,
     VoidCallback? onFindLocation,
+    VoidCallback? onVoiceInput,
+    bool isListening = false,
+    String? recognizedText,
   }) {
     return Semantics(
       label: '$label dropdown',
@@ -565,31 +738,121 @@ class _LandingScreenState extends State<LandingScreen> {
                 onFloorFilterChanged: onFloorFilterChanged,
               ),
               const SizedBox(height: 12),
-              // Find My Location button (only for source node)
-              if (onFindLocation != null) ...[
-                Semantics(
-                  button: true,
-                  label: 'Find my location using camera',
-                  hint: 'Double tap to open camera and detect your current location',
-                  child: OutlinedButton.icon(
-                    onPressed: onFindLocation,
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('Find My Location'),
-                    style: OutlinedButton.styleFrom(
-                      foregroundColor: Theme.of(context).colorScheme.primary,
-                      side: BorderSide(
-                        color: Theme.of(context).colorScheme.primary,
-                        width: 2,
-                      ),
-                      minimumSize: const Size(double.infinity, 48),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+              // Action buttons row
+              Row(
+                children: [
+                  // Find My Location button (only for source node)
+                  if (onFindLocation != null) ...[
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: 'Find my location using camera',
+                        hint: 'Double tap to open camera and detect your current location',
+                        child: OutlinedButton.icon(
+                          onPressed: onFindLocation,
+                          icon: const Icon(Icons.camera_alt),
+                          label: const Text('Find My Location'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Theme.of(context).colorScheme.primary,
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            minimumSize: const Size(0, 48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 8),
+                  ],
+                  // Voice Input button
+                  if (onVoiceInput != null) ...[
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: isListening 
+                            ? 'Stop listening for voice input' 
+                            : 'Start voice input for $label location',
+                        hint: isListening
+                            ? 'Double tap to stop listening'
+                            : 'Double tap to speak your destination',
+                        child: OutlinedButton.icon(
+                          onPressed: onVoiceInput,
+                          icon: isListening
+                              ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                                  ),
+                                )
+                              : const Icon(Icons.mic),
+                          label: Text(isListening ? 'Listening...' : 'Voice'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: isListening
+                                ? Colors.red
+                                : Theme.of(context).colorScheme.primary,
+                            side: BorderSide(
+                              color: isListening
+                                  ? Colors.red
+                                  : Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            minimumSize: const Size(0, 48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              // Show recognized text when listening or after recognition
+              if (recognizedText != null && recognizedText.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isListening
+                        ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
+                        : Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isListening ? Icons.record_voice_over : Icons.check_circle,
+                        size: 16,
+                        color: isListening
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.green,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          isListening
+                              ? 'Listening: "$recognizedText"'
+                              : 'Recognized: "$recognizedText"',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontStyle: FontStyle.italic,
+                            color: isListening
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(height: 12),
               ],
+              const SizedBox(height: 12),
               DropdownMenu<Node>(
                 initialSelection: selectedNode,
                 dropdownMenuEntries: _getFilteredNodes(floorFilter)

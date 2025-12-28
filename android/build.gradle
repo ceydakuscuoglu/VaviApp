@@ -1,3 +1,15 @@
+buildscript {
+    ext.kotlin_version = '1.7.10'
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
 allprojects {
     repositories {
         google()
@@ -8,6 +20,37 @@ allprojects {
 rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+    
+    // Set Flutter properties before evaluation for plugins that need them
+    project.ext.flutter = [
+        compileSdkVersion: 34,
+        minSdkVersion: 21,
+        targetSdkVersion: 34,
+        ndkVersion: null
+    ]
+    
+    // Configure Android properties before evaluation
+    beforeEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                compileSdkVersion = 34
+            }
+        }
+    }
+    
+    // Also set after evaluation as fallback
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (project.android.hasProperty('compileSdkVersion') && project.android.compileSdkVersion == null) {
+                    compileSdkVersion = 34
+                }
+                if (project.android.hasProperty('compileSdk') && project.android.compileSdk == null) {
+                    compileSdk = 34
+                }
+            }
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(":app")
