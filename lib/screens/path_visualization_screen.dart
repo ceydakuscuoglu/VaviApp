@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import '../models/node.dart';
 import '../models/edge.dart';
 import '../services/path_finder_service.dart';
+import '../services/tts_service.dart';
 
 /// Floor segment data structure
 class FloorSegment {
@@ -46,22 +47,283 @@ class PathVisualizationScreen extends StatefulWidget {
       _PathVisualizationScreenState();
 }
 
+/// Grouped path segment for navigation instructions
+class _GroupedPathSegment {
+  final List<int> edgeIndices; // Indices in the path
+  final double totalDistance;
+  final String? turnDirection; // 'left', 'right', or null for straight
+  final Node startNode;
+  final Node endNode;
+  final bool isVerticalConnection;
+  final bool isLandmark; // True if end node is a landmark (room, office, etc.)
+
+  _GroupedPathSegment({
+    required this.edgeIndices,
+    required this.totalDistance,
+    this.turnDirection,
+    required this.startNode,
+    required this.endNode,
+    this.isVerticalConnection = false,
+    this.isLandmark = false,
+  });
+}
+
 class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
   final TransformationController _transformationController =
       TransformationController();
+  final TtsService _ttsService = TtsService();
+  bool _isSpeaking = false;
 
   @override
   void initState() {
     super.initState();
+    _ttsService.initialize();
   }
 
   @override
   void dispose() {
     _transformationController.dispose();
+    _ttsService.dispose();
     super.dispose();
   }
 
-  /// Get path description as text
+  /// Calculate angle between two vectors in degrees
+  double _calculateTurnAngle(double x1, double y1, double x2, double y2, double x3, double y3) {
+    // Vector from point 1 to point 2
+    final dx1 = x2 - x1;
+    final dy1 = y2 - y1;
+    
+    // Vector from point 2 to point 3
+    final dx2 = x3 - x2;
+    final dy2 = y3 - y2;
+    
+    // Calculate angle using dot product and cross product
+    final dot = dx1 * dx2 + dy1 * dy2;
+    final det = dx1 * dy2 - dy1 * dx2;
+    final angle = math.atan2(det, dot) * 180 / math.pi;
+    
+    return angle;
+  }
+
+  /// Get turn direction based on angle
+  String? _getTurnDirection(double angle) {
+    const threshold = 30.0; // Degrees threshold for considering it a turn
+    
+    if (angle.abs() < threshold) {
+      return null; // Straight, no turn
+    } else if (angle > 0) {
+      return 'left';
+    } else {
+      return 'right';
+    }
+  }
+
+  /// Check if a node is a landmark (room, office, elevator, stairs, etc.)
+  bool _isLandmark(Node node) {
+    final type = node.type.toLowerCase();
+    final name = node.name.toLowerCase();
+    
+    // Elevators and stairs are always landmarks
+    if (type == 'elevator' || type == 'staircase') {
+      return true;
+    }
+    
+    // Rooms and offices are landmarks
+    if (type == 'room' || type == 'office' || name.contains('ofis') || 
+        name.contains('lab') || name.contains('room')) {
+      return true;
+    }
+    
+    // Named locations (not just corridors)
+    if (name.isNotEmpty && !name.contains('koridor') && !name.contains('corridor')) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  /// Check if a node is a corridor
+  bool _isCorridor(Node node) {
+    final type = node.type.toLowerCase();
+    final name = node.name.toLowerCase();
+    return type == 'corridor' || name.contains('koridor');
+  }
+
+  /// Group path segments into meaningful navigation instructions
+  List<_GroupedPathSegment> _groupPathSegments() {
+    if (widget.path.length < 2) return [];
+
+    final pathFinder = PathFinderService(
+      nodes: widget.nodes,
+      edges: widget.edges,
+    );
+
+    final groups = <_GroupedPathSegment>[];
+    List<int> currentGroupIndices = [0];
+    double currentGroupDistance = 0.0;
+    Node? currentGroupStartNode;
+    Node? previousNode;
+    int? previousFloor;
+    String? previousTurnDirection;
+
+    for (int i = 0; i < widget.path.length - 1; i++) {
+      final currentNode = pathFinder.getNodeById(widget.path[i]);
+      final nextNode = pathFinder.getNodeById(widget.path[i + 1]);
+      final edge = pathFinder.getEdge(widget.path[i], widget.path[i + 1]);
+
+      if (currentNode == null || nextNode == null || edge == null) continue;
+
+      // Check if this is a vertical connection (elevator/stairs)
+      final isVerticalConnection = edge.type.toLowerCase() == 'vertical_connection';
+      
+      // Calculate turn direction if we have previous segment
+      String? turnDirection;
+      if (i > 0 && previousNode != null && 
+          currentNode.pos.length >= 2 && nextNode.pos.length >= 2 &&
+          previousNode.pos.length >= 2) {
+        if (previousNode.floor == currentNode.floor && 
+            currentNode.floor == nextNode.floor &&
+            !isVerticalConnection) {
+          final angle = _calculateTurnAngle(
+            previousNode.pos[0], previousNode.pos[1],
+            currentNode.pos[0], currentNode.pos[1],
+            nextNode.pos[0], nextNode.pos[1],
+          );
+          turnDirection = _getTurnDirection(angle);
+        }
+      }
+
+      // Handle vertical connections separately - they always break groups
+      if (isVerticalConnection) {
+        // Save current group if it exists
+        if (currentGroupIndices.isNotEmpty && currentGroupStartNode != null) {
+          groups.add(_GroupedPathSegment(
+            edgeIndices: List.from(currentGroupIndices),
+            totalDistance: currentGroupDistance,
+            turnDirection: previousTurnDirection,
+            startNode: currentGroupStartNode,
+            endNode: currentNode,
+            isVerticalConnection: false,
+            isLandmark: _isLandmark(currentNode),
+          ));
+        }
+
+        // Add vertical connection as separate group
+        groups.add(_GroupedPathSegment(
+          edgeIndices: [i],
+          totalDistance: edge.distance,
+          turnDirection: null,
+          startNode: currentNode,
+          endNode: nextNode,
+          isVerticalConnection: true,
+          isLandmark: false,
+        ));
+
+        // Reset for next group after vertical connection
+        currentGroupIndices = [];
+        currentGroupDistance = 0.0;
+        currentGroupStartNode = null;
+        previousTurnDirection = null;
+        previousNode = nextNode; // Update for next iteration
+        previousFloor = nextNode.floor;
+        continue; // Skip to next iteration
+      }
+
+      // Check if we should break the group (for non-vertical connections)
+      bool shouldBreakGroup = false;
+
+      // Break on floor changes
+      if (previousFloor != null && currentNode.floor != previousFloor) {
+        shouldBreakGroup = true;
+      }
+      // Break on significant turns (when turn direction changes)
+      else if (turnDirection != null && previousTurnDirection != null && 
+               turnDirection != previousTurnDirection) {
+        shouldBreakGroup = true;
+      }
+      // Break when reaching a landmark
+      else if (_isLandmark(nextNode)) {
+        shouldBreakGroup = true;
+      }
+      // Break if current node is a landmark and we have a group started
+      else if (currentGroupStartNode != null && _isLandmark(currentNode) && 
+               currentGroupIndices.isNotEmpty) {
+        shouldBreakGroup = true;
+      }
+
+      // If we should break, save current group and start new one
+      if (shouldBreakGroup && currentGroupIndices.isNotEmpty && currentGroupStartNode != null) {
+        // For the group we're breaking, the end node is the current node (where we are now)
+        groups.add(_GroupedPathSegment(
+          edgeIndices: List.from(currentGroupIndices),
+          totalDistance: currentGroupDistance,
+          turnDirection: previousTurnDirection,
+          startNode: currentGroupStartNode,
+          endNode: currentNode,
+          isVerticalConnection: false,
+          isLandmark: _isLandmark(currentNode),
+        ));
+
+        // Start new group - this edge will be the first in the new group
+        currentGroupIndices = [i];
+        currentGroupDistance = edge.distance;
+        currentGroupStartNode = currentNode;
+        previousTurnDirection = turnDirection;
+      } else {
+        // Continue current group
+        if (currentGroupStartNode == null) {
+          currentGroupStartNode = currentNode;
+        }
+        currentGroupIndices.add(i);
+        currentGroupDistance += edge.distance;
+        previousTurnDirection = turnDirection;
+      }
+
+      previousNode = currentNode;
+      previousFloor = currentNode.floor;
+    }
+
+    // Add the last group if it exists
+    if (currentGroupIndices.isNotEmpty && currentGroupStartNode != null) {
+      final lastNode = pathFinder.getNodeById(widget.path.last);
+      if (lastNode != null) {
+        groups.add(_GroupedPathSegment(
+          edgeIndices: List.from(currentGroupIndices),
+          totalDistance: currentGroupDistance,
+          turnDirection: previousTurnDirection,
+          startNode: currentGroupStartNode,
+          endNode: lastNode,
+          isVerticalConnection: false,
+          isLandmark: _isLandmark(lastNode),
+        ));
+      }
+    }
+
+    return groups;
+  }
+
+  /// Get node type description in natural language
+  String _getNodeTypeDescription(Node node) {
+    final type = node.type.toLowerCase();
+    final name = node.name.toLowerCase();
+    
+    if (type == 'elevator' || name.contains('asansör') || name.contains('asansor')) {
+      return 'the elevator';
+    } else if (type == 'staircase' || name.contains('merdiven')) {
+      return 'the stairs';
+    } else if (type == 'lab' || name.contains('lab')) {
+      return 'the laboratory';
+    } else if (type == 'office' || name.contains('ofis')) {
+      return 'the office';
+    } else if (type == 'classroom' || name.contains('sınıf')) {
+      return 'the classroom';
+    } else if (_isCorridor(node)) {
+      return 'the corridor';
+    }
+    return node.name;
+  }
+
+  /// Get path description as text with clear navigation instructions
   String _getPathDescription() {
     if (widget.path.isEmpty) return 'No path found';
 
@@ -76,55 +338,240 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
     buffer.writeln('Total distance: ${totalDistance.toStringAsFixed(1)} meters');
     buffer.writeln('');
     buffer.writeln('Step-by-step directions:');
+    buffer.writeln('');
 
-    for (int i = 0; i < widget.path.length - 1; i++) {
-      final currentNode = pathFinder.getNodeById(widget.path[i]);
-      final nextNode = pathFinder.getNodeById(widget.path[i + 1]);
-      final edge = pathFinder.getEdge(widget.path[i], widget.path[i + 1]);
+    // Get grouped path segments
+    final groupedSegments = _groupPathSegments();
+    
+    if (groupedSegments.isEmpty) {
+      buffer.writeln('Unable to generate directions for this path.');
+      return buffer.toString();
+    }
 
-      if (currentNode != null && nextNode != null && edge != null) {
-        String direction = '';
-        String edgeTypeDescription = '';
-        
-        switch (edge.type.toLowerCase()) {
-          case 'corridor':
-            edgeTypeDescription = 'through the corridor';
-            break;
-          case 'connection':
-            edgeTypeDescription = 'via connection';
-            break;
-          case 'vertical_connection':
-            // Check if it's an elevator or staircase
-            final sourceNode = pathFinder.getNodeById(widget.path[i]);
-            final targetNode = pathFinder.getNodeById(widget.path[i + 1]);
-            final isElevator = (sourceNode?.type.toLowerCase() == 'elevator') ||
-                              (targetNode?.type.toLowerCase() == 'elevator');
-            final isStaircase = (sourceNode?.type.toLowerCase() == 'staircase') ||
-                               (targetNode?.type.toLowerCase() == 'staircase');
-            
-            if (isElevator) {
-              edgeTypeDescription = 'via elevator';
-            } else if (isStaircase) {
-              edgeTypeDescription = 'via stairs';
+    int stepNumber = 1;
+    bool previousWasVertical = false;
+    bool isFirstSegment = true;
+
+    for (int i = 0; i < groupedSegments.length; i++) {
+      final segment = groupedSegments[i];
+      
+      if (segment.isVerticalConnection) {
+        // Handle elevator/stairs
+        final isElevator = (segment.startNode.type.toLowerCase() == 'elevator') ||
+                          (segment.endNode.type.toLowerCase() == 'elevator');
+        final isStaircase = (segment.startNode.type.toLowerCase() == 'staircase') ||
+                           (segment.endNode.type.toLowerCase() == 'staircase');
+
+        if (isElevator) {
+          final floorDiff = (segment.endNode.floor - segment.startNode.floor).abs();
+          if (segment.startNode.floor < segment.endNode.floor) {
+            if (floorDiff == 1) {
+              buffer.writeln('$stepNumber. Enter the elevator and go up one floor to Floor ${segment.endNode.floor}.');
             } else {
-              edgeTypeDescription = 'via elevator/stairs';
+              buffer.writeln('$stepNumber. Enter the elevator and go up $floorDiff floors to Floor ${segment.endNode.floor}.');
             }
-            break;
-          default:
-            edgeTypeDescription = '';
+          } else if (segment.startNode.floor > segment.endNode.floor) {
+            if (floorDiff == 1) {
+              buffer.writeln('$stepNumber. Enter the elevator and go down one floor to Floor ${segment.endNode.floor}.');
+            } else {
+              buffer.writeln('$stepNumber. Enter the elevator and go down $floorDiff floors to Floor ${segment.endNode.floor}.');
+            }
+          } else {
+            buffer.writeln('$stepNumber. Use the elevator on Floor ${segment.startNode.floor}.');
+          }
+        } else if (isStaircase) {
+          final floorDiff = (segment.endNode.floor - segment.startNode.floor).abs();
+          if (segment.startNode.floor < segment.endNode.floor) {
+            if (floorDiff == 1) {
+              buffer.writeln('$stepNumber. Go up the stairs one floor to Floor ${segment.endNode.floor}.');
+            } else {
+              buffer.writeln('$stepNumber. Go up the stairs $floorDiff floors to Floor ${segment.endNode.floor}.');
+            }
+          } else if (segment.startNode.floor > segment.endNode.floor) {
+            if (floorDiff == 1) {
+              buffer.writeln('$stepNumber. Go down the stairs one floor to Floor ${segment.endNode.floor}.');
+            } else {
+              buffer.writeln('$stepNumber. Go down the stairs $floorDiff floors to Floor ${segment.endNode.floor}.');
+            }
+          } else {
+            buffer.writeln('$stepNumber. Use the stairs on Floor ${segment.startNode.floor}.');
+          }
         }
-        
-        if (edgeTypeDescription.isNotEmpty) {
-          direction = '${i + 1}. From ${currentNode.name}, go ${edge.distance.toStringAsFixed(1)} meters ${edgeTypeDescription} to ${nextNode.name}';
+        previousWasVertical = true;
+        stepNumber++;
+      } else {
+        // Handle horizontal movement
+        final distance = segment.totalDistance;
+        final distanceStr = distance.toStringAsFixed(1);
+        String instruction = '';
+
+        // Handle first segment of the route
+        if (isFirstSegment && !previousWasVertical) {
+          // First instruction - provide starting context
+          if (segment.turnDirection == null) {
+            if (segment.isLandmark) {
+              instruction = 'From ${segment.startNode.name}, go straight for $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else if (_isCorridor(segment.endNode)) {
+              instruction = 'From ${segment.startNode.name}, go straight for $distanceStr meters along the corridor.';
+            } else {
+              instruction = 'From ${segment.startNode.name}, go straight for $distanceStr meters.';
+            }
+          } else {
+            // First segment has a turn (unusual but possible)
+            if (segment.turnDirection == 'left') {
+              instruction = 'From ${segment.startNode.name}, go straight for $distanceStr meters, then turn left.';
+            } else {
+              instruction = 'From ${segment.startNode.name}, go straight for $distanceStr meters, then turn right.';
+            }
+          }
+        }
+        // If this is the first segment after exiting elevator/stairs, provide initial direction
+        else if (previousWasVertical) {
+          // Provide direction guidance after exiting
+          if (segment.turnDirection == 'left') {
+            if (segment.isLandmark) {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and turn left. Walk $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and turn left. Continue walking $distanceStr meters along the corridor.';
+            }
+          } else if (segment.turnDirection == 'right') {
+            if (segment.isLandmark) {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and turn right. Walk $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and turn right. Continue walking $distanceStr meters along the corridor.';
+            }
+          } else {
+            // Going straight after exit
+            if (segment.isLandmark) {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and walk straight ahead for $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else if (_isCorridor(segment.endNode)) {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and walk straight ahead for $distanceStr meters along the corridor.';
+            } else {
+              instruction = 'Exit ${_getNodeTypeDescription(segment.startNode)} and walk straight ahead for $distanceStr meters.';
+            }
+          }
         } else {
-          direction = '${i + 1}. From ${currentNode.name}, go ${edge.distance.toStringAsFixed(1)} meters to ${nextNode.name}';
+          // Normal turn instruction
+          if (segment.turnDirection == 'left') {
+            if (segment.isLandmark) {
+              instruction = 'Turn left and walk $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else {
+              instruction = 'Turn left and continue walking $distanceStr meters along the corridor.';
+            }
+          } else if (segment.turnDirection == 'right') {
+            if (segment.isLandmark) {
+              instruction = 'Turn right and walk $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else {
+              instruction = 'Turn right and continue walking $distanceStr meters along the corridor.';
+            }
+          } else {
+            // Straight movement
+            if (segment.isLandmark) {
+              instruction = 'Continue straight ahead for $distanceStr meters until you reach ${segment.endNode.name}.';
+            } else if (_isCorridor(segment.endNode)) {
+              instruction = 'Continue walking straight along the corridor for $distanceStr meters.';
+            } else {
+              instruction = 'Continue straight ahead for $distanceStr meters.';
+            }
+          }
         }
-        
-        buffer.writeln(direction);
+
+        buffer.writeln('$stepNumber. $instruction');
+        previousWasVertical = false;
+        isFirstSegment = false;
+        stepNumber++;
       }
     }
 
+    buffer.writeln('');
+    buffer.writeln('You have arrived at your destination: ${widget.targetNode.name}');
+
     return buffer.toString();
+  }
+
+  /// Get only the directions part (numbered steps) without headers
+  String _getDirectionsOnly() {
+    final fullDescription = _getPathDescription();
+    final lines = fullDescription.split('\n');
+    
+    // Find the line that starts with "Step-by-step directions:"
+    int startIndex = -1;
+    for (int i = 0; i < lines.length; i++) {
+      if (lines[i].contains('Step-by-step directions:')) {
+        startIndex = i + 2; // Start after the header line and empty line
+        break;
+      }
+    }
+    
+    if (startIndex == -1) {
+      // Fallback: return everything if we can't find the header
+      return fullDescription;
+    }
+    
+    // Extract only the numbered steps (skip empty lines and headers)
+    final directionsLines = <String>[];
+    for (int i = startIndex; i < lines.length; i++) {
+      final line = lines[i].trim();
+      // Include numbered steps and the final arrival message
+      if (line.isNotEmpty) {
+        // Check if it's a numbered step (starts with digit followed by period)
+        if (RegExp(r'^\d+\.').hasMatch(line)) {
+          // Remove the step number prefix (e.g., "1. " or "10. ")
+          final directionText = line.replaceFirst(RegExp(r'^\d+\.\s*'), '');
+          directionsLines.add(directionText);
+        } else if (line.contains('You have arrived')) {
+          // Include the arrival message
+          directionsLines.add(line);
+        }
+      }
+    }
+    
+    return directionsLines.join('. ');
+  }
+
+  /// Speak the directions using TTS
+  Future<void> _speakDirections() async {
+    if (_isSpeaking) return;
+    
+    setState(() {
+      _isSpeaking = true;
+    });
+
+    try {
+      // Get only the directions part (numbered steps) without headers
+      final directions = _getDirectionsOnly();
+      
+      if (directions.isEmpty) {
+        setState(() {
+          _isSpeaking = false;
+        });
+        return;
+      }
+      
+      // Set slower speech rate for better comprehension (0.3 = slower than normal)
+      await _ttsService.setSpeechRate(0.3);
+      
+      // Speak only the directions, not the headers
+      await _ttsService.speakAndWait(directions);
+    } catch (e) {
+      print('Error speaking directions: $e');
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isSpeaking = false;
+        });
+      }
+    }
+  }
+
+  /// Stop speaking directions
+  Future<void> _stopSpeaking() async {
+    await _ttsService.stop();
+    if (mounted) {
+      setState(() {
+        _isSpeaking = false;
+      });
+    }
   }
 
   /// Get nodes and edges for the current floor(s) in the path
@@ -161,6 +608,7 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
     int currentFloor = -1;
     List<String> currentSegment = [];
     Node? elevatorEntry;
+    Node? elevatorExit;
     Node? segmentStart;
 
     for (int i = 0; i < widget.path.length; i++) {
@@ -177,7 +625,7 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
           segments.add(FloorSegment(
             floor: currentFloor,
             pathSegment: List.from(currentSegment),
-            elevatorExit: lastNodeInPrevFloor,
+            elevatorEntry: lastNodeInPrevFloor, // Enter elevator on this floor to go to next floor
             startNode: segmentStart,
             endNode: lastNodeInPrevFloor,
           ));
@@ -186,7 +634,8 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
         // Start new segment
         currentFloor = node.floor;
         currentSegment = [widget.path[i]];
-        elevatorEntry = firstNodeInNewFloor;
+        elevatorExit = firstNodeInNewFloor; // Exit elevator on this floor after arriving
+        elevatorEntry = null; // Clear entry since we're on a new floor
         segmentStart = firstNodeInNewFloor;
       } else {
         // Same floor, continue segment
@@ -205,6 +654,7 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
         floor: currentFloor,
         pathSegment: List.from(currentSegment),
         elevatorEntry: elevatorEntry,
+        elevatorExit: elevatorExit,
         startNode: segmentStart,
         endNode: lastNode,
       ));
@@ -455,11 +905,21 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
                     const SizedBox(width: 8),
-                    Text(
-                      'Directions',
-                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
+                    Expanded(
+                      child: Text(
+                        'Directions',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: Icon(
+                        _isSpeaking ? Icons.stop : Icons.volume_up,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      onPressed: _isSpeaking ? _stopSpeaking : _speakDirections,
+                      tooltip: _isSpeaking ? 'Stop reading' : 'Tell me the directions',
                     ),
                   ],
                 ),
