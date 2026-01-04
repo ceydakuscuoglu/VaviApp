@@ -11,27 +11,54 @@ class PathFinderService {
     required this.edges,
   });
 
+  /// Get effective weight for an edge, preferring elevators over staircases
+  /// For visually impaired users, staircases get a large penalty
+  double _getEffectiveWeight(Edge edge) {
+    // If it's a vertical connection, check if it's a staircase
+    if (edge.type.toLowerCase() == 'vertical_connection') {
+      final sourceNode = getNodeById(edge.source);
+      final targetNode = getNodeById(edge.target);
+      
+      // Check if either node is a staircase
+      final isStaircase = (sourceNode?.type.toLowerCase() == 'staircase') ||
+                          (targetNode?.type.toLowerCase() == 'staircase');
+      
+      if (isStaircase) {
+        // Add large penalty to staircases to prefer elevators
+        // This makes the algorithm avoid staircases when elevators are available
+        const staircasePenalty = 1000.0; // Large penalty in meters
+        return edge.distance + staircasePenalty;
+      }
+    }
+    
+    // For elevators and other connections, use normal distance
+    return edge.distance;
+  }
+
   /// Find shortest path between source and target nodes
   /// Returns list of node IDs representing the path, or empty list if no path exists
+  /// Prefers elevators over staircases for accessibility
   List<String> findShortestPath(String sourceId, String targetId) {
     if (sourceId == targetId) {
       return [sourceId];
     }
 
-    // Build adjacency list
+    // Build adjacency list with effective weights (preferring elevators)
     final Map<String, List<MapEntry<String, double>>> graph = {};
     
     for (final edge in edges) {
+      final effectiveWeight = _getEffectiveWeight(edge);
+      
       if (!graph.containsKey(edge.source)) {
         graph[edge.source] = [];
       }
-      graph[edge.source]!.add(MapEntry(edge.target, edge.distance));
+      graph[edge.source]!.add(MapEntry(edge.target, effectiveWeight));
 
       // Make graph undirected
       if (!graph.containsKey(edge.target)) {
         graph[edge.target] = [];
       }
-      graph[edge.target]!.add(MapEntry(edge.source, edge.distance));
+      graph[edge.target]!.add(MapEntry(edge.source, effectiveWeight));
     }
 
     // Dijkstra's algorithm

@@ -4,7 +4,10 @@ import '../models/node.dart';
 import '../models/edge.dart';
 import '../services/data_loader_service.dart';
 import '../services/path_finder_service.dart';
+import '../services/voice_input_service.dart';
+import '../services/tts_service.dart';
 import 'path_visualization_screen.dart';
+import 'camera_location_screen.dart';
 
 /// Landing screen for VAVI app - Initial navigation setup screen
 /// 
@@ -21,33 +24,82 @@ class _LandingScreenState extends State<LandingScreen> {
   List<Edge> _edges = [];
   Node? _selectedSourceNode;
   Node? _selectedTargetNode;
+  int? _selectedSourceFloor; // null means "all floors"
+  int? _selectedTargetFloor; // null means "all floors"
   bool _isLoading = false;
   bool _isLoadingData = true;
   String? _errorMessage;
+  
+  // Voice input
+  final VoiceInputService _voiceInputService = VoiceInputService();
+  final TtsService _ttsService = TtsService();
+  bool _isListeningSource = false;
+  bool _isListeningTarget = false;
+  String? _recognizedText;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    // Start loading immediately but ensure UI renders first
+    // Use microtask to allow the build method to complete first
+    Future.microtask(() async {
+      // Initialize services in parallel (non-blocking)
+      await Future.wait([
+        _initializeVoiceInput(),
+        _initializeTts(),
+      ]);
+      // Load data after services are initialized (this is heavy, runs in isolate)
+      _loadData();
+    });
+  }
+
+  /// Initialize voice input service
+  Future<void> _initializeVoiceInput() async {
+    await _voiceInputService.initialize();
+  }
+
+  /// Initialize TTS service
+  Future<void> _initializeTts() async {
+    await _ttsService.initialize();
+  }
+
+  @override
+  void dispose() {
+    _voiceInputService.dispose();
+    _ttsService.dispose();
+    super.dispose();
   }
 
   /// Load nodes and edges from JSON files
   Future<void> _loadData() async {
+    // Ensure UI has rendered before starting heavy operations
+    await Future.delayed(const Duration(milliseconds: 100));
+    
+    if (!mounted) return;
+    
+    setState(() {
+      _isLoadingData = true;
+      _errorMessage = null;
+    });
+
     try {
-      final nodes = await DataLoaderService.loadNodes();
-      final edges = await DataLoaderService.loadEdges();
+      // Load both in parallel for better performance
+      final results = await Future.wait([
+        DataLoaderService.loadNodes(),
+        DataLoaderService.loadEdges(),
+      ]);
 
       if (mounted) {
         setState(() {
-          _availableNodes = nodes;
-          _edges = edges;
+          _availableNodes = results[0] as List<Node>;
+          _edges = results[1] as List<Edge>;
           _isLoadingData = false;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _errorMessage = 'Failed to load map data: $e';
+          _errorMessage = 'Failed to load map data: ${e.toString()}';
           _isLoadingData = false;
         });
       }
@@ -165,19 +217,333 @@ class _LandingScreenState extends State<LandingScreen> {
   Color _getNodeTypeColor(String type) {
     switch (type.toLowerCase()) {
       case 'lab':
-        return Colors.purple;
+        return const Color(0xFF1B3C53); // Dark muted blue from palette
       case 'office':
-        return Colors.blue;
+        return const Color(0xFF234C6A); // Primary blue from palette
       case 'connection':
-        return Colors.green;
+        return const Color(0xFF456882); // Medium blue-grey from palette
       default:
-        return Colors.grey;
+        return const Color(0xFF456882); // Medium blue-grey from palette
+    }
+  }
+
+  /// Get list of available floors from nodes
+  List<int> _getAvailableFloors() {
+    final floors = _availableNodes
+        .where((node) => 
+            node.type.toLowerCase() != 'corridor' && 
+            node.type.toLowerCase() != 'connection')
+        .map((node) => node.floor)
+        .toSet()
+        .toList();
+    floors.sort();
+    return floors;
+  }
+
+  /// Get filtered nodes based on floor filter and type filter
+  List<Node> _getFilteredNodes(int? floorFilter) {
+    return _availableNodes.where((node) {
+      // Filter out corridors and connections
+      if (node.type.toLowerCase() == 'corridor' || 
+          node.type.toLowerCase() == 'connection') {
+        return false;
+      }
+      // Filter by floor if a floor is selected
+      if (floorFilter != null && node.floor != floorFilter) {
+        return false;
+      }
+      return true;
+    }).toList();
+  }
+
+  /// Handle source floor filter change
+  void _onSourceFloorFilterChanged(int? floor) {
+    setState(() {
+      _selectedSourceFloor = floor;
+      
+      // Clear source selection if it's not on the selected floor
+      if (_selectedSourceNode != null && 
+          floor != null && 
+          _selectedSourceNode!.floor != floor) {
+        _selectedSourceNode = null;
+      }
+      
+      if (floor != null) {
+        HapticFeedback.lightImpact();
+      }
+    });
+  }
+
+  /// Handle target floor filter change
+  void _onTargetFloorFilterChanged(int? floor) {
+    setState(() {
+      _selectedTargetFloor = floor;
+      
+      // Clear target selection if it's not on the selected floor
+      if (_selectedTargetNode != null && 
+          floor != null && 
+          _selectedTargetNode!.floor != floor) {
+        _selectedTargetNode = null;
+      }
+      
+      if (floor != null) {
+        HapticFeedback.lightImpact();
+      }
+    });
+  }
+
+  /// Open camera screen to find location
+  Future<void> _findMyLocation() async {
+    HapticFeedback.mediumImpact();
+    
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CameraLocationScreen(
+          availableNodes: _availableNodes,
+        ),
+      ),
+    );
+
+    if (result != null && result is Node) {
+      setState(() {
+        _selectedSourceNode = result;
+      });
+      
+      HapticFeedback.heavyImpact();
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Location detected: ${result.name}'),
+            duration: const Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+  }
+
+  /// Internal method to listen for voice input and find matching node for source
+  Future<void> _listenAndFindSourceNode() async {
+    setState(() {
+      _isListeningSource = true;
+      _recognizedText = null;
+    });
+
+    try {
+      final recognizedText = await _voiceInputService.startListening(
+        localeId: 'en_US',
+        listenDuration: const Duration(seconds: 15),
+      );
+
+      if (mounted) {
+        setState(() {
+          _isListeningSource = false;
+          _recognizedText = recognizedText;
+        });
+
+        if (recognizedText != null && recognizedText.isNotEmpty) {
+          // Show what was recognized for debugging
+          print('Recognized text: $recognizedText');
+          
+          // Find matching node
+          final matchedNode = _voiceInputService.findMatchingNode(
+            recognizedText,
+            _getFilteredNodes(_selectedSourceFloor),
+          );
+
+          if (matchedNode != null) {
+            // Ask for confirmation via TTS
+            await _confirmNodeSelection(matchedNode, isSource: true);
+          } else {
+            _showError('Could not find location "$recognizedText". Please try speaking the room number clearly (e.g., "A114").');
+          }
+        } else {
+          _showError('No speech detected. Please try again.');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isListeningSource = false;
+        });
+        _showError('Voice input error: ${e.toString()}');
+      }
+    }
+  }
+
+  /// Handle voice input for source node
+  Future<void> _handleVoiceInputSource() async {
+    if (_isListeningSource || _isListeningTarget) {
+      await _voiceInputService.stopListening();
+      setState(() {
+        _isListeningSource = false;
+        _isListeningTarget = false;
+        _recognizedText = null;
+      });
+      return;
+    }
+
+    HapticFeedback.mediumImpact();
+
+    // Check permission
+    if (!await _voiceInputService.hasPermission()) {
+      final granted = await _voiceInputService.requestPermission();
+      if (!granted) {
+        _showError('Microphone permission is required for voice input');
+        return;
+      }
+    }
+
+    // Listen and find node
+    await _listenAndFindSourceNode();
+  }
+
+  /// Internal method to listen for voice input and find matching node for target
+  Future<void> _listenAndFindTargetNode() async {
+    setState(() {
+      _isListeningTarget = true;
+      _recognizedText = null;
+    });
+
+    try {
+      final recognizedText = await _voiceInputService.startListening(
+        localeId: 'en_US',
+        listenDuration: const Duration(seconds: 15),
+      );
+
+      if (mounted) {
+        setState(() {
+          _isListeningTarget = false;
+          _recognizedText = recognizedText;
+        });
+
+        if (recognizedText != null && recognizedText.isNotEmpty) {
+          // Find matching node
+          final matchedNode = _voiceInputService.findMatchingNode(
+            recognizedText,
+            _getFilteredNodes(_selectedTargetFloor),
+          );
+
+          if (matchedNode != null) {
+            // Ask for confirmation via TTS
+            await _confirmNodeSelection(matchedNode, isSource: false);
+          } else {
+            _showError('Could not find location "$recognizedText". Please try again.');
+          }
+        } else {
+          _showError('No speech detected. Please try again.');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isListeningTarget = false;
+        });
+        _showError('Voice input error: ${e.toString()}');
+      }
+    }
+  }
+
+  /// Handle voice input for target node
+  Future<void> _handleVoiceInputTarget() async {
+    if (_isListeningSource || _isListeningTarget) {
+      await _voiceInputService.stopListening();
+      setState(() {
+        _isListeningSource = false;
+        _isListeningTarget = false;
+        _recognizedText = null;
+      });
+      return;
+    }
+
+    HapticFeedback.mediumImpact();
+
+    // Check permission
+    if (!await _voiceInputService.hasPermission()) {
+      final granted = await _voiceInputService.requestPermission();
+      if (!granted) {
+        _showError('Microphone permission is required for voice input');
+        return;
+      }
+    }
+
+    // Listen and find node
+    await _listenAndFindTargetNode();
+  }
+
+  /// Extract location code from node name
+  /// Examples: "OFİS - A220" -> "A220", "A220" -> "A220"
+  String _extractLocationCodeFromNodeName(String nodeName) {
+    // Try to find location code pattern (letter(s) + digits)
+    final locationCodePattern = RegExp(r'\b([A-Z]{1,2}\d{2,4})\b');
+    final match = locationCodePattern.firstMatch(nodeName.toUpperCase());
+    if (match != null) {
+      return match.group(1)!;
+    }
+    // Fallback: if name contains " - ", use part after it
+    if (nodeName.contains(' - ')) {
+      return nodeName.split(' - ').last.trim();
+    }
+    // If no pattern found, return the name as-is
+    return nodeName;
+  }
+
+  /// Announce and automatically select node via voice
+  Future<void> _confirmNodeSelection(Node node, {required bool isSource}) async {
+    if (!mounted) return;
+
+    final locationCode = _extractLocationCodeFromNodeName(node.name);
+    final announcementText = 'You selected $locationCode';
+
+    // Announce the selection
+    await _ttsService.speakAndWait(announcementText);
+
+    if (!mounted) return;
+
+    // Automatically save the selection
+    setState(() {
+      if (isSource) {
+        _selectedSourceNode = node;
+      } else {
+        _selectedTargetNode = node;
+      }
+    });
+
+    HapticFeedback.heavyImpact();
+
+    // Show success message
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Selected: ${node.name}'),
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.green,
+        ),
+      );
+    }
+
+    // Check if both nodes are selected - if so, navigate to path page
+    if (_selectedSourceNode != null && _selectedTargetNode != null) {
+      // Wait a moment for user to hear announcement
+      await Future.delayed(const Duration(milliseconds: 500));
+      
+      if (mounted) {
+        // Automatically find and navigate to shortest path
+        await _findShortestPath();
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         title: const Text(
           'VAVI Navigation',
@@ -188,13 +554,20 @@ class _LandingScreenState extends State<LandingScreen> {
         elevation: 0,
       ),
       body: _isLoadingData
-          ? const Center(
+          ? Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 16),
-                  Text('Loading map data...'),
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading map data...',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ],
               ),
             )
@@ -254,7 +627,7 @@ class _LandingScreenState extends State<LandingScreen> {
                                   'Choose your starting point and destination to find the shortest path',
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
                                       ),
                                 ),
                               ],
@@ -269,6 +642,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           label: 'From',
                           icon: Icons.location_on,
                           selectedNode: _selectedSourceNode,
+                          floorFilter: _selectedSourceFloor,
                           onNodeChanged: (Node? node) {
                             setState(() {
                               _selectedSourceNode = node;
@@ -277,6 +651,11 @@ class _LandingScreenState extends State<LandingScreen> {
                               HapticFeedback.lightImpact();
                             }
                           },
+                          onFloorFilterChanged: _onSourceFloorFilterChanged,
+                          onFindLocation: _findMyLocation,
+                          onVoiceInput: _handleVoiceInputSource,
+                          isListening: _isListeningSource,
+                          recognizedText: _isListeningSource ? _recognizedText : null,
                         ),
 
                         const SizedBox(height: 20),
@@ -311,6 +690,7 @@ class _LandingScreenState extends State<LandingScreen> {
                           label: 'To',
                           icon: Icons.place,
                           selectedNode: _selectedTargetNode,
+                          floorFilter: _selectedTargetFloor,
                           onNodeChanged: (Node? node) {
                             setState(() {
                               _selectedTargetNode = node;
@@ -319,6 +699,10 @@ class _LandingScreenState extends State<LandingScreen> {
                               HapticFeedback.lightImpact();
                             }
                           },
+                          onFloorFilterChanged: _onTargetFloorFilterChanged,
+                          onVoiceInput: _handleVoiceInputTarget,
+                          isListening: _isListeningTarget,
+                          recognizedText: _isListeningTarget ? _recognizedText : null,
                         ),
 
                         const SizedBox(height: 32),
@@ -382,6 +766,12 @@ class _LandingScreenState extends State<LandingScreen> {
     required IconData icon,
     required Node? selectedNode,
     required ValueChanged<Node?> onNodeChanged,
+    int? floorFilter,
+    required ValueChanged<int?> onFloorFilterChanged,
+    VoidCallback? onFindLocation,
+    VoidCallback? onVoiceInput,
+    bool isListening = false,
+    String? recognizedText,
   }) {
     return Semantics(
       label: '$label dropdown',
@@ -410,9 +800,130 @@ class _LandingScreenState extends State<LandingScreen> {
                 ],
               ),
               const SizedBox(height: 12),
+              // Floor Filter for this selector
+              _buildInlineFloorFilter(
+                floorFilter: floorFilter,
+                onFloorFilterChanged: onFloorFilterChanged,
+              ),
+              const SizedBox(height: 12),
+              // Action buttons row
+              Row(
+                children: [
+                  // Find My Location button (only for source node)
+                  if (onFindLocation != null) ...[
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: 'Find my location using camera',
+                        hint: 'Double tap to open camera and detect your current location',
+                        child: OutlinedButton.icon(
+                          onPressed: onFindLocation,
+                          icon: const Icon(Icons.camera_alt),
+                          label: const Text('Find My Location'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Theme.of(context).colorScheme.primary,
+                            side: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            minimumSize: const Size(0, 48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  // Voice Input button
+                  if (onVoiceInput != null) ...[
+                    Expanded(
+                      child: Semantics(
+                        button: true,
+                        label: isListening 
+                            ? 'Stop listening for voice input' 
+                            : 'Start voice input for $label location',
+                        hint: isListening
+                            ? 'Double tap to stop listening'
+                            : 'Double tap to speak your destination',
+                        child: OutlinedButton.icon(
+                          onPressed: onVoiceInput,
+                          icon: isListening
+                              ? const SizedBox(
+                                  width: 16,
+                                  height: 16,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                                  ),
+                                )
+                              : const Icon(Icons.mic),
+                          label: Text(isListening ? 'Listening...' : 'Voice'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: isListening
+                                ? Colors.red
+                                : Theme.of(context).colorScheme.primary,
+                            side: BorderSide(
+                              color: isListening
+                                  ? Colors.red
+                                  : Theme.of(context).colorScheme.primary,
+                              width: 2,
+                            ),
+                            minimumSize: const Size(0, 48),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+              // Show recognized text when listening or after recognition
+              if (recognizedText != null && recognizedText.isNotEmpty) ...[
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: isListening
+                        ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
+                        : Theme.of(context).colorScheme.surfaceContainerHighest,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        isListening ? Icons.record_voice_over : Icons.check_circle,
+                        size: 16,
+                        color: isListening
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.green,
+                      ),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          isListening
+                              ? 'Listening: "$recognizedText"'
+                              : 'Recognized: "$recognizedText"',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontStyle: FontStyle.italic,
+                            color: isListening
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.onSurface,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+              const SizedBox(height: 12),
               DropdownMenu<Node>(
                 initialSelection: selectedNode,
-                dropdownMenuEntries: _availableNodes
+                dropdownMenuEntries: _getFilteredNodes(floorFilter)
                     .map((node) => DropdownMenuEntry<Node>(
                           value: node,
                           label: node.name,
@@ -470,6 +981,59 @@ class _LandingScreenState extends State<LandingScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  /// Build inline floor filter widget (compact version for node selector)
+  Widget _buildInlineFloorFilter({
+    int? floorFilter,
+    required ValueChanged<int?> onFloorFilterChanged,
+  }) {
+    final availableFloors = _getAvailableFloors();
+    
+    return Row(
+      children: [
+        Icon(
+          Icons.layers,
+          size: 18,
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          'Floor:',
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: DropdownMenu<int?>(
+            initialSelection: floorFilter,
+            dropdownMenuEntries: [
+              const DropdownMenuEntry<int?>(
+                value: null,
+                label: 'All Floors',
+              ),
+              ...availableFloors.map((floor) => DropdownMenuEntry<int?>(
+                    value: floor,
+                    label: 'Floor $floor',
+                  )),
+            ],
+            onSelected: onFloorFilterChanged,
+            textStyle: const TextStyle(fontSize: 14),
+            menuStyle: MenuStyle(
+              backgroundColor: WidgetStateProperty.all(Colors.white),
+              elevation: WidgetStateProperty.all(4),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+            hintText: 'All Floors',
+          ),
+        ),
+      ],
     );
   }
 }
