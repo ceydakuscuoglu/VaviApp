@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.9.10'
     repositories {
         google()
         mavenCentral()
@@ -29,16 +29,7 @@ subprojects {
         ndkVersion: null
     ]
     
-    // Configure Android properties before evaluation
-    beforeEvaluate { project ->
-        if (project.hasProperty('android')) {
-            project.android {
-                compileSdkVersion = 34
-            }
-        }
-    }
-    
-    // Also set after evaluation as fallback
+    // Ensure all subprojects use the correct Kotlin version
     afterEvaluate { project ->
         if (project.hasProperty('android')) {
             project.android {
@@ -50,6 +41,18 @@ subprojects {
                 }
             }
         }
+        
+        // Force Kotlin version for all subprojects
+        if (project.hasProperty('kotlin')) {
+            project.kotlin {
+                if (project.kotlin.hasProperty('version')) {
+                    project.kotlin.version = rootProject.ext.kotlin_version
+                }
+            }
+        }
+        
+        // Set Kotlin version in project extensions
+        project.ext.kotlin_version = rootProject.ext.kotlin_version
     }
 }
 subprojects {

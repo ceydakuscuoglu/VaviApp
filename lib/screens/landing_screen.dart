@@ -5,6 +5,7 @@ import '../models/edge.dart';
 import '../services/data_loader_service.dart';
 import '../services/path_finder_service.dart';
 import '../services/voice_input_service.dart';
+import '../services/tts_service.dart';
 import 'path_visualization_screen.dart';
 import 'camera_location_screen.dart';
 
@@ -31,6 +32,7 @@ class _LandingScreenState extends State<LandingScreen> {
   
   // Voice input
   final VoiceInputService _voiceInputService = VoiceInputService();
+  final TtsService _ttsService = TtsService();
   bool _isListeningSource = false;
   bool _isListeningTarget = false;
   String? _recognizedText;
@@ -39,9 +41,15 @@ class _LandingScreenState extends State<LandingScreen> {
   void initState() {
     super.initState();
     // Start loading immediately but ensure UI renders first
-    Future.microtask(() {
+    // Use microtask to allow the build method to complete first
+    Future.microtask(() async {
+      // Initialize services in parallel (non-blocking)
+      await Future.wait([
+        _initializeVoiceInput(),
+        _initializeTts(),
+      ]);
+      // Load data after services are initialized (this is heavy, runs in isolate)
       _loadData();
-      _initializeVoiceInput();
     });
   }
 
@@ -50,9 +58,15 @@ class _LandingScreenState extends State<LandingScreen> {
     await _voiceInputService.initialize();
   }
 
+  /// Initialize TTS service
+  Future<void> _initializeTts() async {
+    await _ttsService.initialize();
+  }
+
   @override
   void dispose() {
     _voiceInputService.dispose();
+    _ttsService.dispose();
     super.dispose();
   }
 
@@ -312,30 +326,8 @@ class _LandingScreenState extends State<LandingScreen> {
     }
   }
 
-  /// Handle voice input for source node
-  Future<void> _handleVoiceInputSource() async {
-    if (_isListeningSource || _isListeningTarget) {
-      await _voiceInputService.stopListening();
-      setState(() {
-        _isListeningSource = false;
-        _isListeningTarget = false;
-        _recognizedText = null;
-      });
-      return;
-    }
-
-    HapticFeedback.mediumImpact();
-
-    // Check permission
-    if (!await _voiceInputService.hasPermission()) {
-      final granted = await _voiceInputService.requestPermission();
-      if (!granted) {
-        _showError('Microphone permission is required for voice input');
-        return;
-      }
-    }
-
-
+  /// Internal method to listen for voice input and find matching node for source
+  Future<void> _listenAndFindSourceNode() async {
     setState(() {
       _isListeningSource = true;
       _recognizedText = null;
@@ -364,19 +356,8 @@ class _LandingScreenState extends State<LandingScreen> {
           );
 
           if (matchedNode != null) {
-            setState(() {
-              _selectedSourceNode = matchedNode;
-            });
-            HapticFeedback.heavyImpact();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Selected: ${matchedNode.name}'),
-                duration: const Duration(seconds: 2),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                backgroundColor: Colors.green,
-              ),
-            );
+            // Ask for confirmation via TTS
+            await _confirmNodeSelection(matchedNode, isSource: true);
           } else {
             _showError('Could not find location "$recognizedText". Please try speaking the room number clearly (e.g., "A114").');
           }
@@ -388,6 +369,79 @@ class _LandingScreenState extends State<LandingScreen> {
       if (mounted) {
         setState(() {
           _isListeningSource = false;
+        });
+        _showError('Voice input error: ${e.toString()}');
+      }
+    }
+  }
+
+  /// Handle voice input for source node
+  Future<void> _handleVoiceInputSource() async {
+    if (_isListeningSource || _isListeningTarget) {
+      await _voiceInputService.stopListening();
+      setState(() {
+        _isListeningSource = false;
+        _isListeningTarget = false;
+        _recognizedText = null;
+      });
+      return;
+    }
+
+    HapticFeedback.mediumImpact();
+
+    // Check permission
+    if (!await _voiceInputService.hasPermission()) {
+      final granted = await _voiceInputService.requestPermission();
+      if (!granted) {
+        _showError('Microphone permission is required for voice input');
+        return;
+      }
+    }
+
+    // Listen and find node
+    await _listenAndFindSourceNode();
+  }
+
+  /// Internal method to listen for voice input and find matching node for target
+  Future<void> _listenAndFindTargetNode() async {
+    setState(() {
+      _isListeningTarget = true;
+      _recognizedText = null;
+    });
+
+    try {
+      final recognizedText = await _voiceInputService.startListening(
+        localeId: 'en_US',
+        listenDuration: const Duration(seconds: 15),
+      );
+
+      if (mounted) {
+        setState(() {
+          _isListeningTarget = false;
+          _recognizedText = recognizedText;
+        });
+
+        if (recognizedText != null && recognizedText.isNotEmpty) {
+          // Find matching node
+          final matchedNode = _voiceInputService.findMatchingNode(
+            recognizedText,
+            _getFilteredNodes(_selectedTargetFloor),
+          );
+
+          if (matchedNode != null) {
+            // Ask for confirmation via TTS
+            await _confirmNodeSelection(matchedNode, isSource: false);
+          } else {
+            _showError('Could not find location "$recognizedText". Please try again.');
+          }
+        } else {
+          _showError('No speech detected. Please try again.');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isListeningTarget = false;
         });
         _showError('Voice input error: ${e.toString()}');
       }
@@ -417,57 +471,71 @@ class _LandingScreenState extends State<LandingScreen> {
       }
     }
 
+    // Listen and find node
+    await _listenAndFindTargetNode();
+  }
+
+  /// Extract location code from node name
+  /// Examples: "OFİS - A220" -> "A220", "A220" -> "A220"
+  String _extractLocationCodeFromNodeName(String nodeName) {
+    // Try to find location code pattern (letter(s) + digits)
+    final locationCodePattern = RegExp(r'\b([A-Z]{1,2}\d{2,4})\b');
+    final match = locationCodePattern.firstMatch(nodeName.toUpperCase());
+    if (match != null) {
+      return match.group(1)!;
+    }
+    // Fallback: if name contains " - ", use part after it
+    if (nodeName.contains(' - ')) {
+      return nodeName.split(' - ').last.trim();
+    }
+    // If no pattern found, return the name as-is
+    return nodeName;
+  }
+
+  /// Announce and automatically select node via voice
+  Future<void> _confirmNodeSelection(Node node, {required bool isSource}) async {
+    if (!mounted) return;
+
+    final locationCode = _extractLocationCodeFromNodeName(node.name);
+    final announcementText = 'You selected $locationCode';
+
+    // Announce the selection
+    await _ttsService.speakAndWait(announcementText);
+
+    if (!mounted) return;
+
+    // Automatically save the selection
     setState(() {
-      _isListeningTarget = true;
-      _recognizedText = null;
+      if (isSource) {
+        _selectedSourceNode = node;
+      } else {
+        _selectedTargetNode = node;
+      }
     });
 
-    try {
-      final recognizedText = await _voiceInputService.startListening(
-        localeId: 'en_US',
-        listenDuration: const Duration(seconds: 15),
+    HapticFeedback.heavyImpact();
+
+    // Show success message
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Selected: ${node.name}'),
+          duration: const Duration(seconds: 1),
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Colors.green,
+        ),
       );
+    }
 
+    // Check if both nodes are selected - if so, navigate to path page
+    if (_selectedSourceNode != null && _selectedTargetNode != null) {
+      // Wait a moment for user to hear announcement
+      await Future.delayed(const Duration(milliseconds: 500));
+      
       if (mounted) {
-        setState(() {
-          _isListeningTarget = false;
-          _recognizedText = recognizedText;
-        });
-
-        if (recognizedText != null && recognizedText.isNotEmpty) {
-          // Find matching node
-          final matchedNode = _voiceInputService.findMatchingNode(
-            recognizedText,
-            _getFilteredNodes(_selectedTargetFloor),
-          );
-
-          if (matchedNode != null) {
-            setState(() {
-              _selectedTargetNode = matchedNode;
-            });
-            HapticFeedback.heavyImpact();
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('Selected: ${matchedNode.name}'),
-                duration: const Duration(seconds: 2),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                backgroundColor: Colors.green,
-              ),
-            );
-          } else {
-            _showError('Could not find location "$recognizedText". Please try again.');
-          }
-        } else {
-          _showError('No speech detected. Please try again.');
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        setState(() {
-          _isListeningTarget = false;
-        });
-        _showError('Voice input error: ${e.toString()}');
+        // Automatically find and navigate to shortest path
+        await _findShortestPath();
       }
     }
   }
