@@ -10,6 +10,11 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.6
+  tflite_flutter: 0.11.0
+  camera: ^0.10.6
+  image: ^4.5.2
+  audioplayers: ^6.0.0
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -21,4 +26,7 @@ flutter:
   
   assets:
     - assets/data/
+    - assets/models/
+    - assets/sounds/
+    - assets/vectors/
 

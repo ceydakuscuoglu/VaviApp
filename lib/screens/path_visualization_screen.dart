@@ -4,6 +4,7 @@ import 'dart:math' as math;
 import '../models/node.dart';
 import '../models/edge.dart';
 import '../services/path_finder_service.dart';
+import 'object_detection_screen.dart';
 
 /// Floor segment data structure
 class FloorSegment {
@@ -482,6 +483,20 @@ class _PathVisualizationScreenState extends State<PathVisualizationScreen> {
             ),
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ObjectDetectionScreen(),
+            ),
+          );
+        },
+        label: const Text('Detect Objects'),
+        icon: const Icon(Icons.camera_alt),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        foregroundColor: Colors.white,
       ),
     );
   }
