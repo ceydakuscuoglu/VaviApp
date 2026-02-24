@@ -6,7 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class GeminiService {
   // Hardcoded API key - replace with your Gemini API key
   static const String _defaultApiKey =
-      'AIzaSyCoTquiZzFHZzTf1M-3BXPBp3FsiAGDF0Y';
+      '';
 
   static const String _apiKeyStorageKey = 'gemini_api_key';
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
