@@ -1,1690 +1,2426 @@
 [
-    {
-      "id": "1_floor_node_0",
-      "name": "yönetim binası",
-      "type": "connection",
-      "pos": [51.71, -0.6, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_1",
-      "name": "FİZİK LAB - A111",
-      "type": "lab",
-      "pos": [52.71, -13.88, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_2",
-      "name": "ASİSTAN ODASI - A115",
-      "type": "office",
-      "pos": [44.92, -14.67, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_3",
-      "name": "DEPO - A113",
-      "type": "warehouse",
-      "pos": [45.82, -11.78, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_4",
-      "name": "PEDAGOJİ LAB - A117",
-      "type": "lab",
-      "pos": [37.83, -13.88, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_5",
-      "name": "SINIF - A116",
-      "type": "classroom",
-      "pos": [38.73, -2.99, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_6",
-      "name": "KALİTE GÜVENCE VE KURUMSAL ANALİZ - A120",
-      "type": "office",
-      "pos": [23.26, -2.99, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_7",
-      "name": "OFİS - A127",
-      "type": "office",
-      "pos": [23.06, -13.88, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_8",
-      "name": "OFİS - A125",
-      "type": "office",
-      "pos": [25.36, -13.88, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_9",
-      "name": "OFİS - A123",
-      "type": "office",
-      "pos": [27.95, -13.88, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_10",
-      "name": "OFİS - A121",
-      "type": "office",
-      "pos": [30.25, -14.08, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_11",
-      "name": "OFİS - A119",
-      "type": "office",
-      "pos": [32.64, -14.08, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_12",
-      "name": "OKUL ÖNCESİ EĞİTİM ATÖLYESİ - A131",
-      "type": "classroom",
-      "pos": [7.19, -13.68, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_13",
-      "name": "LOUNGE",
-      "type": "lounge",
-      "pos": [29.55, -3.39, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_14",
-      "name": "ELEKTRİK ODASI - A124",
-      "type": "electric_room",
-      "pos": [7.69, -1.7, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_15",
-      "name": "KADIN WC - A126",
-      "type": "restroom",
-      "pos": [2.2, -1.7, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_16",
-      "name": "WC HOLÜ - 2",
-      "type": "connection",
-      "pos": [6.09, -2.8, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_17",
-      "name": "ASANSÖR - 2",
-      "type": "elevator",
-      "pos": [8.09, -4.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_18",
-      "name": "A BLOK MERDİVEN 2",
-      "type": "staircase",
-      "pos": [11.68, -1.4, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_19",
-      "name": "A BLOK MERDİVEN 1",
-      "type": "staircase",
-      "pos": [45.72, -1.3, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_20",
-      "name": "WC HOLÜ - 1",
-      "type": "connection",
-      "pos": [54.21, -1.6, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_21",
-      "name": "ERKEK WC - A112A",
-      "type": "restroom",
-      "pos": [53.61, -3.69, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_22",
-      "name": "KADIN WC - A112B",
-      "type": "restroom",
-      "pos": [56.1, -3.89, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_23",
-      "name": "ÇAY OCAĞI - A114",
-      "type": "kitchen",
-      "pos": [49.12, -1.1, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_24",
-      "name": "HOL",
-      "type": "connection",
-      "pos": [51.81, -3.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_25",
-      "name": "ASANSÖR - 1",
-      "type": "elevator",
-      "pos": [49.22, -4.49, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_26",
-      "name": "TEKNİK HACİM - 1",
-      "type": "technical_room",
-      "pos": [56.3, -5.99, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_27",
-      "name": "TEKNİK HACİM - 2",
-      "type": "technical_room",
-      "pos": [0.6, -5.99, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_29",
-      "name": "BLOK HOLÜ",
-      "type": "connection",
-      "pos": [1.8, -13.48, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_30",
-      "name": "Koridor-1",
-      "type": "corridor",
-      "pos": [0.2, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_31",
-      "name": "Koridor-2",
-      "type": "corridor",
-      "pos": [2.3, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_32",
-      "name": "Koridor-3",
-      "type": "corridor",
-      "pos": [4.39, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_33",
-      "name": "Koridor-4",
-      "type": "corridor",
-      "pos": [6.49, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_34",
-      "name": "Koridor-5",
-      "type": "corridor",
-      "pos": [8.49, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_35",
-      "name": "Koridor-6",
-      "type": "corridor",
-      "pos": [10.58, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_36",
-      "name": "Koridor-7",
-      "type": "corridor",
-      "pos": [12.68, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_37",
-      "name": "Koridor-8",
-      "type": "corridor",
-      "pos": [14.77, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_38",
-      "name": "Koridor-9",
-      "type": "corridor",
-      "pos": [16.77, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_39",
-      "name": "Koridor-10",
-      "type": "corridor",
-      "pos": [18.87, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_40",
-      "name": "Koridor-11",
-      "type": "corridor",
-      "pos": [20.96, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_41",
-      "name": "Koridor-12",
-      "type": "corridor",
-      "pos": [23.06, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_42",
-      "name": "Koridor-13",
-      "type": "corridor",
-      "pos": [25.06, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_43",
-      "name": "Koridor-14",
-      "type": "corridor",
-      "pos": [27.15, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_44",
-      "name": "Koridor-15",
-      "type": "corridor",
-      "pos": [29.25, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_45",
-      "name": "Koridor-16",
-      "type": "corridor",
-      "pos": [31.35, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_46",
-      "name": "Koridor-17",
-      "type": "corridor",
-      "pos": [33.34, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_47",
-      "name": "Koridor-18",
-      "type": "corridor",
-      "pos": [35.44, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_48",
-      "name": "Koridor-19",
-      "type": "corridor",
-      "pos": [37.54, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_49",
-      "name": "Koridor-20",
-      "type": "corridor",
-      "pos": [39.53, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_50",
-      "name": "Koridor-21",
-      "type": "corridor",
-      "pos": [41.63, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_51",
-      "name": "Koridor-22",
-      "type": "corridor",
-      "pos": [43.72, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_52",
-      "name": "Koridor-23",
-      "type": "corridor",
-      "pos": [45.82, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_53",
-      "name": "Koridor-24",
-      "type": "corridor",
-      "pos": [47.82, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_54",
-      "name": "Koridor-25",
-      "type": "corridor",
-      "pos": [49.91, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_55",
-      "name": "Koridor-26",
-      "type": "corridor",
-      "pos": [52.01, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_56",
-      "name": "Koridor-27",
-      "type": "corridor",
-      "pos": [54.11, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_57",
-      "name": "Koridor-28",
-      "type": "corridor",
-      "pos": [56.1, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "1_floor_node_58",
-      "name": "Koridor-29",
-      "type": "corridor",
-      "pos": [58.2, -8.59, 0.0],
-      "floor": 1
-    },
-    {
-      "id": "2_floor_node_0",
-      "name": "BİLGİSAYAR LAB - A211",
-      "type": "lab",
-      "pos": [52.21, -13.88, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_1",
-      "name": "ASİSTAN ODASI - A215",
-      "type": "office",
-      "pos": [44.92, -14.67, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_2",
-      "name": "DEPO - A213",
-      "type": "warehouse",
-      "pos": [45.62, -12.08, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_3",
-      "name": "BİLGİSAYAR LAB - A217",
-      "type": "lab",
-      "pos": [37.83, -13.88, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_4",
-      "name": "MÜH. OPTİMİZASYON LAB - A216",
-      "type": "lab",
-      "pos": [37.04, -2.99, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_5",
-      "name": "SINIF - A229",
-      "type": "classroom",
-      "pos": [17.67, -13.88, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_6",
-      "name": "MİKRODALGA LAB - A226",
-      "type": "lab",
-      "pos": [16.37, -2.9, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_7",
-      "name": "SINIF - A231",
-      "type": "classroom",
-      "pos": [9.38, -13.78, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_8",
-      "name": "OFİS - A222",
-      "type": "office",
-      "pos": [28.05, -2.5, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_9",
-      "name": "OFİS - A220",
-      "type": "office",
-      "pos": [30.35, -2.7, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_10",
-      "name": "OFİS - A218",
-      "type": "office",
-      "pos": [32.64, -2.7, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_11",
-      "name": "OFİS - A227",
-      "type": "office",
-      "pos": [23.06, -13.88, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_12",
-      "name": "OFİS - A225",
-      "type": "office",
-      "pos": [25.36, -13.88, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_13",
-      "name": "OFİS - A223",
-      "type": "office",
-      "pos": [27.95, -13.88, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_14",
-      "name": "OFİS - A221",
-      "type": "office",
-      "pos": [30.25, -14.08, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_15",
-      "name": "OFİS - A219",
-      "type": "office",
-      "pos": [32.64, -14.08, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_16",
-      "name": "ASANSÖR - 2",
-      "type": "elevator",
-      "pos": [8.09, -4.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_17",
-      "name": "ASANSÖR - 1",
-      "type": "elevator",
-      "pos": [49.22, -4.49, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_18",
-      "name": "ELEKTRİK ODASI - A228",
-      "type": "electric_room",
-      "pos": [7.69, -1.7, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_19",
-      "name": "KADIN WC - A230",
-      "type": "restroom",
-      "pos": [2.2, -1.7, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_20",
-      "name": "WC HOLÜ - 2",
-      "type": "connection",
-      "pos": [6.09, -2.8, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_21",
-      "name": "WC HOLÜ - 1",
-      "type": "connection",
-      "pos": [55.2, -1.5, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_22",
-      "name": "ERKEK WC - A212A",
-      "type": "restroom",
-      "pos": [53.51, -3.69, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_23",
-      "name": "KADIN WC - A212B",
-      "type": "restroom",
-      "pos": [56.1, -3.89, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_24",
-      "name": "ÇAY OCAĞI - A214",
-      "type": "kitchen",
-      "pos": [49.12, -1.1, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_25",
-      "name": "MÜHENDİSLİK AR-GÖR",
-      "type": "office",
-      "pos": [22.46, -3.09, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_26",
-      "name": "A BLOK MERDİVEN 2",
-      "type": "staircase",
-      "pos": [11.68, -1.4, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_27",
-      "name": "A BLOK MERDİVEN 1",
-      "type": "staircase",
-      "pos": [45.72, -1.3, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_28",
-      "name": "HOL",
-      "type": "connection",
-      "pos": [52.01, -2.99, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_30",
-      "name": "TEKNİK HACİM - 1",
-      "type": "technical_room",
-      "pos": [56.3, -5.99, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_31",
-      "name": "TEKNİK HACİM - 2",
-      "type": "technical_room",
-      "pos": [0.6, -5.99, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_33",
-      "name": "BLOK HOLÜ",
-      "type": "connection",
-      "pos": [1.8, -13.48, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_34",
-      "name": "Koridor-1",
-      "type": "corridor",
-      "pos": [0.2, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_35",
-      "name": "Koridor-2",
-      "type": "corridor",
-      "pos": [2.3, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_36",
-      "name": "Koridor-3",
-      "type": "corridor",
-      "pos": [4.39, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_37",
-      "name": "Koridor-4",
-      "type": "corridor",
-      "pos": [6.49, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_38",
-      "name": "Koridor-5",
-      "type": "corridor",
-      "pos": [8.49, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_39",
-      "name": "Koridor-6",
-      "type": "corridor",
-      "pos": [10.58, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_40",
-      "name": "Koridor-7",
-      "type": "corridor",
-      "pos": [12.68, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_41",
-      "name": "Koridor-8",
-      "type": "corridor",
-      "pos": [14.77, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_42",
-      "name": "Koridor-9",
-      "type": "corridor",
-      "pos": [16.77, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_43",
-      "name": "Koridor-10",
-      "type": "corridor",
-      "pos": [18.87, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_44",
-      "name": "Koridor-11",
-      "type": "corridor",
-      "pos": [20.96, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_45",
-      "name": "Koridor-12",
-      "type": "corridor",
-      "pos": [23.06, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_46",
-      "name": "Koridor-13",
-      "type": "corridor",
-      "pos": [25.06, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_47",
-      "name": "Koridor-14",
-      "type": "corridor",
-      "pos": [27.15, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_48",
-      "name": "Koridor-15",
-      "type": "corridor",
-      "pos": [29.25, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_49",
-      "name": "Koridor-16",
-      "type": "corridor",
-      "pos": [31.35, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_50",
-      "name": "Koridor-17",
-      "type": "corridor",
-      "pos": [33.34, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_51",
-      "name": "Koridor-18",
-      "type": "corridor",
-      "pos": [35.44, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_52",
-      "name": "Koridor-19",
-      "type": "corridor",
-      "pos": [37.54, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_53",
-      "name": "Koridor-20",
-      "type": "corridor",
-      "pos": [39.63, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_54",
-      "name": "Koridor-21",
-      "type": "corridor",
-      "pos": [41.63, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_55",
-      "name": "Koridor-22",
-      "type": "corridor",
-      "pos": [43.72, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_56",
-      "name": "Koridor-23",
-      "type": "corridor",
-      "pos": [45.82, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_57",
-      "name": "Koridor-24",
-      "type": "corridor",
-      "pos": [47.92, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_58",
-      "name": "Koridor-25",
-      "type": "corridor",
-      "pos": [49.91, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_59",
-      "name": "Koridor-26",
-      "type": "corridor",
-      "pos": [52.01, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_60",
-      "name": "Koridor-27",
-      "type": "corridor",
-      "pos": [54.11, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_61",
-      "name": "Koridor-28",
-      "type": "corridor",
-      "pos": [56.2, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "2_floor_node_62",
-      "name": "Koridor-29",
-      "type": "corridor",
-      "pos": [58.2, -8.59, 3.0],
-      "floor": 2
-    },
-    {
-      "id": "3_floor_node_0",
-      "name": "EE. LAB - A311",
-      "type": "lab",
-      "pos": [52.91, -13.78, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_1",
-      "name": "ASİSTAN ODASI - A315",
-      "type": "office",
-      "pos": [44.92, -14.67, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_2",
-      "name": "DEPO - A313",
-      "type": "warehouse",
-      "pos": [45.62, -11.68, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_3",
-      "name": "ENDÜSTRİ LAB - A316",
-      "type": "lab",
-      "pos": [37.83, -2.99, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_4",
-      "name": "SINIF - A329",
-      "type": "classroom",
-      "pos": [17.67, -13.88, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_5",
-      "name": "MİKRODALGA LAB - A326",
-      "type": "lab",
-      "pos": [16.57, -2.9, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_6",
-      "name": "SINIF - A331",
-      "type": "classroom",
-      "pos": [9.38, -13.78, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_7",
-      "name": "BİLGİSAYAR LAB - A317",
-      "type": "lab",
-      "pos": [37.83, -13.88, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_8",
-      "name": "OFİS - A322",
-      "type": "office",
-      "pos": [28.05, -2.5, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_9",
-      "name": "OFİS - A320",
-      "type": "office",
-      "pos": [30.35, -2.7, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_10",
-      "name": "OFİS - A318",
-      "type": "office",
-      "pos": [32.64, -2.7, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_11",
-      "name": "OFİS - A327",
-      "type": "office",
-      "pos": [23.06, -13.88, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_12",
-      "name": "OFİS - A325",
-      "type": "office",
-      "pos": [25.36, -13.88, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_13",
-      "name": "OFİS - A323",
-      "type": "office",
-      "pos": [27.95, -13.88, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_14",
-      "name": "OFİS - A321",
-      "type": "office",
-      "pos": [30.25, -14.08, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_15",
-      "name": "OFİS - A319",
-      "type": "office",
-      "pos": [32.64, -14.08, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_16",
-      "name": "ASANSÖR - 2",
-      "type": "elevator",
-      "pos": [8.09, -4.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_17",
-      "name": "ELEKTRİK ODASI - A328",
-      "type": "electric_room",
-      "pos": [7.69, -1.7, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_18",
-      "name": "KADIN WC - A330",
-      "type": "restroom",
-      "pos": [2.2, -1.7, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_19",
-      "name": "WC HOLÜ - 2",
-      "type": "connection",
-      "pos": [6.09, -2.8, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_20",
-      "name": "OFİS - A324",
-      "type": "office",
-      "pos": [24.26, -3.09, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_21",
-      "name": "A BLOK MERDİVEN 2",
-      "type": "staircase",
-      "pos": [11.68, -1.4, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_22",
-      "name": "ASANSÖR - 1",
-      "type": "elevator",
-      "pos": [49.22, -4.49, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_23",
-      "name": "WC HOLÜ - 1",
-      "type": "connection",
-      "pos": [55.2, -1.5, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_24",
-      "name": "ERKEK WC - A312A",
-      "type": "restroom",
-      "pos": [53.61, -3.69, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_25",
-      "name": "KADIN WC - A312B",
-      "type": "restroom",
-      "pos": [56.1, -3.89, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_26",
-      "name": "ÇAY OCAĞI - A314",
-      "type": "kitchen",
-      "pos": [49.12, -1.1, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_27",
-      "name": "A BLOK MERDİVEN 1",
-      "type": "staircase",
-      "pos": [45.72, -1.3, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_28",
-      "name": "HOL",
-      "type": "connection",
-      "pos": [52.01, -2.99, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_30",
-      "name": "TEKNİK HACİM - 1",
-      "type": "technical_room",
-      "pos": [56.3, -5.99, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_31",
-      "name": "TEKNİK HACİM - 2",
-      "type": "technical_room",
-      "pos": [6.0, -5.99, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_32",
-      "name": "BLOK HOLÜ",
-      "type": "connection",
-      "pos": [1.8, -13.48, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_33",
-      "name": "Koridor-1",
-      "type": "corridor",
-      "pos": [0.2, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_34",
-      "name": "Koridor-2",
-      "type": "corridor",
-      "pos": [2.3, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_35",
-      "name": "Koridor-3",
-      "type": "corridor",
-      "pos": [4.39, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_36",
-      "name": "Koridor-4",
-      "type": "corridor",
-      "pos": [6.49, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_37",
-      "name": "Koridor-5",
-      "type": "corridor",
-      "pos": [8.49, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_38",
-      "name": "Koridor-6",
-      "type": "corridor",
-      "pos": [10.58, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_39",
-      "name": "Koridor-7",
-      "type": "corridor",
-      "pos": [12.68, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_40",
-      "name": "Koridor-8",
-      "type": "corridor",
-      "pos": [14.77, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_41",
-      "name": "Koridor-9",
-      "type": "corridor",
-      "pos": [16.77, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_42",
-      "name": "Koridor-10",
-      "type": "corridor",
-      "pos": [18.87, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_43",
-      "name": "Koridor-11",
-      "type": "corridor",
-      "pos": [20.96, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_44",
-      "name": "Koridor-12",
-      "type": "corridor",
-      "pos": [23.06, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_45",
-      "name": "Koridor-13",
-      "type": "corridor",
-      "pos": [25.06, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_46",
-      "name": "Koridor-14",
-      "type": "corridor",
-      "pos": [27.15, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_47",
-      "name": "Koridor-15",
-      "type": "corridor",
-      "pos": [29.25, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_48",
-      "name": "Koridor-16",
-      "type": "corridor",
-      "pos": [31.35, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_49",
-      "name": "Koridor-17",
-      "type": "corridor",
-      "pos": [33.34, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_50",
-      "name": "Koridor-18",
-      "type": "corridor",
-      "pos": [35.44, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_51",
-      "name": "Koridor-19",
-      "type": "corridor",
-      "pos": [37.54, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_52",
-      "name": "Koridor-20",
-      "type": "corridor",
-      "pos": [39.53, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_53",
-      "name": "Koridor-21",
-      "type": "corridor",
-      "pos": [41.63, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_54",
-      "name": "Koridor-22",
-      "type": "corridor",
-      "pos": [43.72, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_55",
-      "name": "Koridor-23",
-      "type": "corridor",
-      "pos": [45.82, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_56",
-      "name": "Koridor-24",
-      "type": "corridor",
-      "pos": [47.82, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_57",
-      "name": "Koridor-25",
-      "type": "corridor",
-      "pos": [49.91, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_58",
-      "name": "Koridor-26",
-      "type": "corridor",
-      "pos": [52.01, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_59",
-      "name": "Koridor-27",
-      "type": "corridor",
-      "pos": [54.11, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_60",
-      "name": "Koridor-28",
-      "type": "corridor",
-      "pos": [56.1, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "3_floor_node_61",
-      "name": "Koridor-29",
-      "type": "corridor",
-      "pos": [58.2, -8.59, 6.0],
-      "floor": 3
-    },
-    {
-      "id": "4_floor_node_0",
-      "name": "OFİS - A421",
-      "type": "office",
-      "pos": [44.62, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_1",
-      "name": "OFİS - A419",
-      "type": "office",
-      "pos": [47.02, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_2",
-      "name": "OFİS - A417",
-      "type": "office",
-      "pos": [49.22, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_3",
-      "name": "OFİS - A415",
-      "type": "office",
-      "pos": [51.91, -14.97, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_4",
-      "name": "OFİS - A413",
-      "type": "office",
-      "pos": [54.21, -15.07, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_5",
-      "name": "OFİS - A411",
-      "type": "office",
-      "pos": [56.5, -13.78, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_6",
-      "name": "SINIF - A435",
-      "type": "classroom",
-      "pos": [17.67, -13.88, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_7",
-      "name": "SINIF - A422",
-      "type": "classroom",
-      "pos": [17.87, -2.9, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_8",
-      "name": "SINIF - A437",
-      "type": "classroom",
-      "pos": [9.38, -13.78, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_9",
-      "name": "ARGÖR ODASI - A420",
-      "type": "office",
-      "pos": [23.86, -3.19, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_10",
-      "name": "ASANSÖR - 1",
-      "type": "elevator",
-      "pos": [49.22, -4.49, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_11",
-      "name": "WC HOLÜ - 1",
-      "type": "connection",
-      "pos": [55.2, -1.5, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_12",
-      "name": "ERKEK WC - A412A",
-      "type": "restroom",
-      "pos": [53.61, -3.69, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_13",
-      "name": "KADIN WC - A412B",
-      "type": "restroom",
-      "pos": [56.1, -3.89, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_14",
-      "name": "ÇAY OCAĞI - A414",
-      "type": "kitchen",
-      "pos": [49.12, -1.1, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_15",
-      "name": "HOL",
-      "type": "connection",
-      "pos": [52.01, -3.29, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_16",
-      "name": "OFİS - A429",
-      "type": "office",
-      "pos": [27.95, -13.88, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_17",
-      "name": "OFİS - A427",
-      "type": "office",
-      "pos": [30.25, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_18",
-      "name": "OFİS - A425",
-      "type": "office",
-      "pos": [32.64, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_19",
-      "name": "OFİS - A431",
-      "type": "office",
-      "pos": [25.16, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_20",
-      "name": "OFİS - A433",
-      "type": "office",
-      "pos": [22.96, -14.08, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_21",
-      "name": "ASANSÖR - 2",
-      "type": "elevator",
-      "pos": [8.09, -4.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_22",
-      "name": "ELEKTRİK ODASI - A424",
-      "type": "electric_room",
-      "pos": [7.69, -1.7, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_23",
-      "name": "KADIN WC - A426",
-      "type": "restroom",
-      "pos": [2.2, -1.7, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_24",
-      "name": "WC HOLÜ - 2",
-      "type": "connection",
-      "pos": [6.09, -2.8, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_25",
-      "name": "LOUNGE",
-      "type": "lounge",
-      "pos": [29.75, -3.29, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_26",
-      "name": "A BLOK MERDİVEN 2",
-      "type": "staircase",
-      "pos": [11.68, -1.4, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_27",
-      "name": "A BLOK MERDİVEN 1",
-      "type": "staircase",
-      "pos": [45.72, -1.3, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_29",
-      "name": "TEKNİK HACİM - 1",
-      "type": "technical_room",
-      "pos": [56.3, -5.99, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_30",
-      "name": "TEKNİK HACİM - 2",
-      "type": "technical_room",
-      "pos": [0.6, -5.99, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_31",
-      "name": "BLOK HOLÜ",
-      "type": "connection",
-      "pos": [1.8, -13.48, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_32",
-      "name": "OFİS HOLÜ",
-      "type": "connection",
-      "pos": [52.41, -11.78, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_33",
-      "name": "Koridor-1",
-      "type": "corridor",
-      "pos": [0.2, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_34",
-      "name": "Koridor-2",
-      "type": "corridor",
-      "pos": [2.3, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_35",
-      "name": "Koridor-3",
-      "type": "corridor",
-      "pos": [4.39, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_36",
-      "name": "Koridor-4",
-      "type": "corridor",
-      "pos": [6.49, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_37",
-      "name": "Koridor-5",
-      "type": "corridor",
-      "pos": [8.49, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_38",
-      "name": "Koridor-6",
-      "type": "corridor",
-      "pos": [10.58, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_39",
-      "name": "Koridor-7",
-      "type": "corridor",
-      "pos": [12.68, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_40",
-      "name": "Koridor-8",
-      "type": "corridor",
-      "pos": [14.77, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_41",
-      "name": "Koridor-9",
-      "type": "corridor",
-      "pos": [16.77, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_42",
-      "name": "Koridor-10",
-      "type": "corridor",
-      "pos": [18.87, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_43",
-      "name": "Koridor-11",
-      "type": "corridor",
-      "pos": [20.96, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_44",
-      "name": "Koridor-12",
-      "type": "corridor",
-      "pos": [23.06, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_45",
-      "name": "Koridor-13",
-      "type": "corridor",
-      "pos": [25.06, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_46",
-      "name": "Koridor-14",
-      "type": "corridor",
-      "pos": [27.15, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_47",
-      "name": "Koridor-15",
-      "type": "corridor",
-      "pos": [29.25, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_48",
-      "name": "Koridor-16",
-      "type": "corridor",
-      "pos": [31.35, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_49",
-      "name": "Koridor-17",
-      "type": "corridor",
-      "pos": [33.34, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_50",
-      "name": "Koridor-18",
-      "type": "corridor",
-      "pos": [35.44, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_51",
-      "name": "Koridor-19",
-      "type": "corridor",
-      "pos": [37.54, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_52",
-      "name": "Koridor-20",
-      "type": "corridor",
-      "pos": [39.63, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_53",
-      "name": "Koridor-21",
-      "type": "corridor",
-      "pos": [41.63, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_54",
-      "name": "Koridor-22",
-      "type": "corridor",
-      "pos": [43.72, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_55",
-      "name": "Koridor-23",
-      "type": "corridor",
-      "pos": [45.82, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_56",
-      "name": "Koridor-24",
-      "type": "corridor",
-      "pos": [47.92, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_57",
-      "name": "Koridor-25",
-      "type": "corridor",
-      "pos": [49.91, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_58",
-      "name": "Koridor-26",
-      "type": "corridor",
-      "pos": [52.01, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_59",
-      "name": "Koridor-27",
-      "type": "corridor",
-      "pos": [54.11, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_60",
-      "name": "Koridor-28",
-      "type": "corridor",
-      "pos": [56.2, -8.59, 9.0],
-      "floor": 4
-    },
-    {
-      "id": "4_floor_node_61",
-      "name": "Koridor-29",
-      "type": "corridor",
-      "pos": [58.2, -8.59, 9.0],
-      "floor": 4
-    }
-  ]
-  
+  {
+    "id": "0_floor_node_0",
+    "name": "yönetim binası",
+    "type": "room_label",
+    "pos": [52.51, 17.47, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_1",
+    "name": "U blok",
+    "type": "room_label",
+    "pos": [2.1, 1.8, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_2",
+    "name": "UPO YÖNETİCİ OFİSİ",
+    "type": "room_label",
+    "pos": [56.8, 4.99, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_3",
+    "name": "UPO",
+    "type": "room_label",
+    "pos": [53.91, 4.39, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_4",
+    "name": "KARİYER MERKEZİ OFİS 1",
+    "type": "room_label",
+    "pos": [37.83, 4.59, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_5",
+    "name": "Ö.İ. YÖNETİCİ OFİSİ",
+    "type": "room_label",
+    "pos": [40.53, 4.19, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_6",
+    "name": "ÖĞRENCİ İŞLERİ",
+    "type": "room_label",
+    "pos": [45.92, 4.49, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_7",
+    "name": "GENEL SEKRETER",
+    "type": "room_label",
+    "pos": [40.73, 15.27, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_8",
+    "name": "SEKRETER",
+    "type": "room_label",
+    "pos": [36.14, 15.27, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_9",
+    "name": "ÖĞRENCİ AKTİVİTELERİ YÖNETİCİ OFİSİ",
+    "type": "room_label",
+    "pos": [20.36, 15.97, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_10",
+    "name": "ÖĞRENCİ AKTİVİTELERİ OFİSİ",
+    "type": "room_label",
+    "pos": [16.77, 15.97, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_11",
+    "name": "YAZI İŞLERİ",
+    "type": "room_label",
+    "pos": [19.37, 4.29, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_12",
+    "name": "M.İ. YÖNETİCİ OFİSİ",
+    "type": "room_label",
+    "pos": [15.77, 4.39, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_13",
+    "name": "MALİ İŞLER",
+    "type": "room_label",
+    "pos": [10.08, 4.49, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_14",
+    "name": "KARİYER MERKEZİ OFİS 2",
+    "type": "room_label",
+    "pos": [35.34, 4.79, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_15",
+    "name": "HOL",
+    "type": "room_label",
+    "pos": [52.81, 15.17, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_16",
+    "name": "KARİYER MERKEZİ HOL",
+    "type": "room_label",
+    "pos": [38.73, 6.29, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_17",
+    "name": "WC HOLÜ",
+    "type": "room_label",
+    "pos": [55.1, 16.47, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_18",
+    "name": "ERKEK WC",
+    "type": "room_label",
+    "pos": [54.41, 14.38, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_19",
+    "name": "KADIN WC",
+    "type": "room_label",
+    "pos": [56.9, 14.18, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_20",
+    "name": "ÇAY OCAĞI",
+    "type": "room_label",
+    "pos": [49.91, 16.37, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_21",
+    "name": "ELEKTRİK ODASI",
+    "type": "room_label",
+    "pos": [8.59, 16.17, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_22",
+    "name": "KADIN WC",
+    "type": "room_label",
+    "pos": [3.09, 16.17, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_23",
+    "name": "HOL",
+    "type": "room_label",
+    "pos": [6.99, 15.17, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_24",
+    "name": "ATM",
+    "type": "room_label",
+    "pos": [1.6, 3.89, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_25",
+    "name": "ASANSÖR",
+    "type": "room_label",
+    "pos": [8.98, 13.38, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_26",
+    "name": "A BLOK MERDİVEN 2",
+    "type": "room_label",
+    "pos": [11.98, 17.07, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_27",
+    "name": "A BLOK MERDİVEN 1",
+    "type": "room_label",
+    "pos": [46.02, 17.17, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_28",
+    "name": "ASANSÖR",
+    "type": "room_label",
+    "pos": [49.91, 13.48, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_29",
+    "name": "TEKNİK HACİM",
+    "type": "room_label",
+    "pos": [57.2, 12.08, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_30",
+    "name": "TEKNİK HACİM",
+    "type": "room_label",
+    "pos": [1.4, 12.08, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_31",
+    "name": "BLOK HOLÜ",
+    "type": "room_label",
+    "pos": [2.4, 4.69, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_32",
+    "name": "GİRİŞ HOLÜ",
+    "type": "room_label",
+    "pos": [28.25, 10.18, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_33",
+    "name": "Koridor-Düğüm-1",
+    "type": "corridor",
+    "pos": [1.1, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_34",
+    "name": "Koridor-Düğüm-2",
+    "type": "corridor",
+    "pos": [3.09, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_35",
+    "name": "Koridor-Düğüm-3",
+    "type": "corridor",
+    "pos": [5.19, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_36",
+    "name": "Koridor-Düğüm-4",
+    "type": "corridor",
+    "pos": [7.29, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_37",
+    "name": "Koridor-Düğüm-5",
+    "type": "corridor",
+    "pos": [9.38, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_38",
+    "name": "Koridor-Düğüm-6",
+    "type": "corridor",
+    "pos": [11.38, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_39",
+    "name": "Koridor-Düğüm-7",
+    "type": "corridor",
+    "pos": [13.48, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_40",
+    "name": "Koridor-Düğüm-8",
+    "type": "corridor",
+    "pos": [15.57, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_41",
+    "name": "Koridor-Düğüm-9",
+    "type": "corridor",
+    "pos": [17.67, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_42",
+    "name": "Koridor-Düğüm-10",
+    "type": "corridor",
+    "pos": [19.67, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_43",
+    "name": "Koridor-Düğüm-11",
+    "type": "corridor",
+    "pos": [21.76, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_44",
+    "name": "Koridor-Düğüm-12",
+    "type": "corridor",
+    "pos": [23.86, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_45",
+    "name": "Koridor-Düğüm-13",
+    "type": "corridor",
+    "pos": [25.96, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_46",
+    "name": "Koridor-Düğüm-14",
+    "type": "corridor",
+    "pos": [27.95, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_47",
+    "name": "Koridor-Düğüm-15",
+    "type": "corridor",
+    "pos": [30.05, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_48",
+    "name": "Koridor-Düğüm-16",
+    "type": "corridor",
+    "pos": [32.14, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_49",
+    "name": "Koridor-Düğüm-17",
+    "type": "corridor",
+    "pos": [34.24, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_50",
+    "name": "Koridor-Düğüm-18",
+    "type": "corridor",
+    "pos": [36.24, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_51",
+    "name": "Koridor-Düğüm-19",
+    "type": "corridor",
+    "pos": [38.33, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_52",
+    "name": "Koridor-Düğüm-20",
+    "type": "corridor",
+    "pos": [40.43, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_53",
+    "name": "Koridor-Düğüm-21",
+    "type": "corridor",
+    "pos": [42.53, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_54",
+    "name": "Koridor-Düğüm-22",
+    "type": "corridor",
+    "pos": [44.52, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_55",
+    "name": "Koridor-Düğüm-23",
+    "type": "corridor",
+    "pos": [46.62, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_56",
+    "name": "Koridor-Düğüm-24",
+    "type": "corridor",
+    "pos": [48.72, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_57",
+    "name": "Koridor-Düğüm-25",
+    "type": "corridor",
+    "pos": [50.81, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_58",
+    "name": "Koridor-Düğüm-26",
+    "type": "corridor",
+    "pos": [52.81, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_59",
+    "name": "Koridor-Düğüm-27",
+    "type": "corridor",
+    "pos": [54.91, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_60",
+    "name": "Koridor-Düğüm-28",
+    "type": "corridor",
+    "pos": [57.0, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "0_floor_node_61",
+    "name": "Koridor-Düğüm-29",
+    "type": "corridor",
+    "pos": [59.1, 9.58, 0.0],
+    "floor": 0,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_0",
+    "name": "yönetim binası",
+    "type": "connection",
+    "pos": [51.71, -0.6, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_1",
+    "name": "FİZİK LAB - A111",
+    "type": "lab",
+    "pos": [52.71, -13.88, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_2",
+    "name": "ASİSTAN ODASI - A115",
+    "type": "office",
+    "pos": [44.92, -14.67, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_3",
+    "name": "DEPO - A113",
+    "type": "warehouse",
+    "pos": [45.82, -11.78, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_4",
+    "name": "PEDAGOJİ LAB - A117",
+    "type": "lab",
+    "pos": [37.83, -13.88, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_5",
+    "name": "SINIF - A116",
+    "type": "classroom",
+    "pos": [38.73, -2.99, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_6",
+    "name": "KALİTE GÜVENCE VE KURUMSAL ANALİZ - A120",
+    "type": "office",
+    "pos": [23.26, -2.99, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_7",
+    "name": "OFİS - A127",
+    "type": "office",
+    "pos": [23.06, -13.88, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_8",
+    "name": "OFİS - A125",
+    "type": "office",
+    "pos": [25.36, -13.88, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_9",
+    "name": "OFİS - A123",
+    "type": "office",
+    "pos": [27.95, -13.88, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_10",
+    "name": "OFİS - A121",
+    "type": "office",
+    "pos": [30.25, -14.08, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_11",
+    "name": "OFİS - A119",
+    "type": "office",
+    "pos": [32.64, -14.08, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_12",
+    "name": "OKUL ÖNCESİ EĞİTİM ATÖLYESİ - A31",
+    "type": "classroom",
+    "pos": [7.19, -13.68, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_13",
+    "name": "LOUNGE",
+    "type": "lounge",
+    "pos": [29.55, -3.39, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_14",
+    "name": "ELEKTRİK ODASI - A124",
+    "type": "electric_room",
+    "pos": [7.69, -1.7, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_15",
+    "name": "KADIN WC - A126",
+    "type": "restroom",
+    "pos": [2.2, -1.7, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_16",
+    "name": "WC HOLÜ - 2",
+    "type": "connection",
+    "pos": [6.09, -2.8, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_17",
+    "name": "ASANSÖR - 2",
+    "type": "elevator",
+    "pos": [8.09, -4.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_18",
+    "name": "A BLOK MERDİVEN 2",
+    "type": "staircase",
+    "pos": [11.68, -1.4, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_19",
+    "name": "A BLOK MERDİVEN 1",
+    "type": "staircase",
+    "pos": [45.72, -1.3, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_20",
+    "name": "WC HOLÜ - 1",
+    "type": "connection",
+    "pos": [54.21, -1.6, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_21",
+    "name": "ERKEK WC - A112A",
+    "type": "restroom",
+    "pos": [53.61, -3.69, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_22",
+    "name": "KADIN WC - A112B",
+    "type": "restroom",
+    "pos": [56.1, -3.89, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_23",
+    "name": "ÇAY OCAĞI - A114",
+    "type": "kitchen",
+    "pos": [49.12, -1.1, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_24",
+    "name": "HOL",
+    "type": "connection",
+    "pos": [51.81, -3.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_25",
+    "name": "ASANSÖR - 1",
+    "type": "elevator",
+    "pos": [49.22, -4.49, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_26",
+    "name": "TEKNİK HACİM - 1",
+    "type": "technical_room",
+    "pos": [56.3, -5.99, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_27",
+    "name": "TEKNİK HACİM - 2",
+    "type": "technical_room",
+    "pos": [0.6, -5.99, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_29",
+    "name": "BLOK HOLÜ",
+    "type": "connection",
+    "pos": [1.8, -13.48, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_30",
+    "name": "Koridor-1",
+    "type": "corridor",
+    "pos": [0.2, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_31",
+    "name": "Koridor-2",
+    "type": "corridor",
+    "pos": [2.3, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_32",
+    "name": "Koridor-3",
+    "type": "corridor",
+    "pos": [4.39, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_33",
+    "name": "Koridor-4",
+    "type": "corridor",
+    "pos": [6.49, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_34",
+    "name": "Koridor-5",
+    "type": "corridor",
+    "pos": [8.49, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_35",
+    "name": "Koridor-6",
+    "type": "corridor",
+    "pos": [10.58, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_36",
+    "name": "Koridor-7",
+    "type": "corridor",
+    "pos": [12.68, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_37",
+    "name": "Koridor-8",
+    "type": "corridor",
+    "pos": [14.77, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_38",
+    "name": "Koridor-9",
+    "type": "corridor",
+    "pos": [16.77, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_39",
+    "name": "Koridor-10",
+    "type": "corridor",
+    "pos": [18.87, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_40",
+    "name": "Koridor-11",
+    "type": "corridor",
+    "pos": [20.96, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_41",
+    "name": "Koridor-12",
+    "type": "corridor",
+    "pos": [23.06, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_42",
+    "name": "Koridor-13",
+    "type": "corridor",
+    "pos": [25.06, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_43",
+    "name": "Koridor-14",
+    "type": "corridor",
+    "pos": [27.15, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_44",
+    "name": "Koridor-15",
+    "type": "corridor",
+    "pos": [29.25, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_45",
+    "name": "Koridor-16",
+    "type": "corridor",
+    "pos": [31.35, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_46",
+    "name": "Koridor-17",
+    "type": "corridor",
+    "pos": [33.34, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_47",
+    "name": "Koridor-18",
+    "type": "corridor",
+    "pos": [35.44, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_48",
+    "name": "Koridor-19",
+    "type": "corridor",
+    "pos": [37.54, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_49",
+    "name": "Koridor-20",
+    "type": "corridor",
+    "pos": [39.53, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_50",
+    "name": "Koridor-21",
+    "type": "corridor",
+    "pos": [41.63, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_51",
+    "name": "Koridor-22",
+    "type": "corridor",
+    "pos": [43.72, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_52",
+    "name": "Koridor-23",
+    "type": "corridor",
+    "pos": [45.82, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_53",
+    "name": "Koridor-24",
+    "type": "corridor",
+    "pos": [47.82, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_54",
+    "name": "Koridor-25",
+    "type": "corridor",
+    "pos": [49.91, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_55",
+    "name": "Koridor-26",
+    "type": "corridor",
+    "pos": [52.01, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_56",
+    "name": "Koridor-27",
+    "type": "corridor",
+    "pos": [54.11, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_57",
+    "name": "Koridor-28",
+    "type": "corridor",
+    "pos": [56.1, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "1_floor_node_58",
+    "name": "Koridor-29",
+    "type": "corridor",
+    "pos": [58.2, -8.59, 3.0],
+    "floor": 1,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_0",
+    "name": "BİLGİSAYAR LAB - A211",
+    "type": "lab",
+    "pos": [52.21, -13.88, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_1",
+    "name": "ASİSTAN ODASI - A215",
+    "type": "office",
+    "pos": [44.92, -14.67, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_2",
+    "name": "DEPO - A213",
+    "type": "warehouse",
+    "pos": [45.62, -12.08, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_3",
+    "name": "BİLGİSAYAR LAB - A217",
+    "type": "lab",
+    "pos": [37.83, -13.88, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_4",
+    "name": "MÜH. OPTİMİZASYON LAB - A216",
+    "type": "lab",
+    "pos": [37.04, -2.99, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_5",
+    "name": "SINIF - A229",
+    "type": "classroom",
+    "pos": [17.67, -13.88, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_6",
+    "name": "MİKRODALGA LAB - A226",
+    "type": "lab",
+    "pos": [16.37, -2.9, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_7",
+    "name": "SINIF - A231",
+    "type": "classroom",
+    "pos": [9.38, -13.78, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_8",
+    "name": "OFİS - A222",
+    "type": "office",
+    "pos": [28.05, -2.5, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_9",
+    "name": "OFİS - A220",
+    "type": "office",
+    "pos": [30.35, -2.7, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_10",
+    "name": "OFİS - A218",
+    "type": "office",
+    "pos": [32.64, -2.7, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_11",
+    "name": "OFİS - A227",
+    "type": "office",
+    "pos": [23.06, -13.88, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_12",
+    "name": "OFİS - A225",
+    "type": "office",
+    "pos": [25.36, -13.88, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_13",
+    "name": "OFİS - A223",
+    "type": "office",
+    "pos": [27.95, -13.88, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_14",
+    "name": "OFİS - A221",
+    "type": "office",
+    "pos": [30.25, -14.08, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_15",
+    "name": "OFİS - A219",
+    "type": "office",
+    "pos": [32.64, -14.08, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_16",
+    "name": "ASANSÖR - 2",
+    "type": "elevator",
+    "pos": [8.09, -4.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_17",
+    "name": "ASANSÖR - 1",
+    "type": "elevator",
+    "pos": [49.22, -4.49, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_18",
+    "name": "ELEKTRİK ODASI - A228",
+    "type": "electric_room",
+    "pos": [7.69, -1.7, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_19",
+    "name": "KADIN WC - A230",
+    "type": "restroom",
+    "pos": [2.2, -1.7, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_20",
+    "name": "WC HOLÜ - 2",
+    "type": "connection",
+    "pos": [6.09, -2.8, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_21",
+    "name": "WC HOLÜ - 1",
+    "type": "connection",
+    "pos": [55.2, -1.5, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_22",
+    "name": "ERKEK WC - A212A",
+    "type": "restroom",
+    "pos": [53.51, -3.69, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_23",
+    "name": "KADIN WC - A212B",
+    "type": "restroom",
+    "pos": [56.1, -3.89, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_24",
+    "name": "ÇAY OCAĞI - A214",
+    "type": "kitchen",
+    "pos": [49.12, -1.1, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_25",
+    "name": "MÜHENDİSLİK AR-GÖR",
+    "type": "office",
+    "pos": [22.46, -3.09, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_26",
+    "name": "A BLOK MERDİVEN 2",
+    "type": "staircase",
+    "pos": [11.68, -1.4, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_27",
+    "name": "A BLOK MERDİVEN 1",
+    "type": "staircase",
+    "pos": [45.72, -1.3, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_28",
+    "name": "HOL",
+    "type": "connection",
+    "pos": [52.01, -2.99, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_30",
+    "name": "TEKNİK HACİM - 1",
+    "type": "technical_room",
+    "pos": [56.3, -5.99, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_31",
+    "name": "TEKNİK HACİM - 2",
+    "type": "technical_room",
+    "pos": [0.6, -5.99, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_33",
+    "name": "BLOK HOLÜ",
+    "type": "connection",
+    "pos": [1.8, -13.48, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_34",
+    "name": "Koridor-1",
+    "type": "corridor",
+    "pos": [0.2, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_35",
+    "name": "Koridor-2",
+    "type": "corridor",
+    "pos": [2.3, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_36",
+    "name": "Koridor-3",
+    "type": "corridor",
+    "pos": [4.39, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_37",
+    "name": "Koridor-4",
+    "type": "corridor",
+    "pos": [6.49, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_38",
+    "name": "Koridor-5",
+    "type": "corridor",
+    "pos": [8.49, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_39",
+    "name": "Koridor-6",
+    "type": "corridor",
+    "pos": [10.58, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_40",
+    "name": "Koridor-7",
+    "type": "corridor",
+    "pos": [12.68, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_41",
+    "name": "Koridor-8",
+    "type": "corridor",
+    "pos": [14.77, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_42",
+    "name": "Koridor-9",
+    "type": "corridor",
+    "pos": [16.77, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_43",
+    "name": "Koridor-10",
+    "type": "corridor",
+    "pos": [18.87, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_44",
+    "name": "Koridor-11",
+    "type": "corridor",
+    "pos": [20.96, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_45",
+    "name": "Koridor-12",
+    "type": "corridor",
+    "pos": [23.06, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_46",
+    "name": "Koridor-13",
+    "type": "corridor",
+    "pos": [25.06, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_47",
+    "name": "Koridor-14",
+    "type": "corridor",
+    "pos": [27.15, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_48",
+    "name": "Koridor-15",
+    "type": "corridor",
+    "pos": [29.25, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_49",
+    "name": "Koridor-16",
+    "type": "corridor",
+    "pos": [31.35, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_50",
+    "name": "Koridor-17",
+    "type": "corridor",
+    "pos": [33.34, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_51",
+    "name": "Koridor-18",
+    "type": "corridor",
+    "pos": [35.44, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_52",
+    "name": "Koridor-19",
+    "type": "corridor",
+    "pos": [37.54, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_53",
+    "name": "Koridor-20",
+    "type": "corridor",
+    "pos": [39.63, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_54",
+    "name": "Koridor-21",
+    "type": "corridor",
+    "pos": [41.63, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_55",
+    "name": "Koridor-22",
+    "type": "corridor",
+    "pos": [43.72, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_56",
+    "name": "Koridor-23",
+    "type": "corridor",
+    "pos": [45.82, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_57",
+    "name": "Koridor-24",
+    "type": "corridor",
+    "pos": [47.92, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_58",
+    "name": "Koridor-25",
+    "type": "corridor",
+    "pos": [49.91, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_59",
+    "name": "Koridor-26",
+    "type": "corridor",
+    "pos": [52.01, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_60",
+    "name": "Koridor-27",
+    "type": "corridor",
+    "pos": [54.11, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_61",
+    "name": "Koridor-28",
+    "type": "corridor",
+    "pos": [56.2, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "2_floor_node_62",
+    "name": "Koridor-29",
+    "type": "corridor",
+    "pos": [58.2, -8.59, 6.0],
+    "floor": 2,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_0",
+    "name": "EE. LAB - A311",
+    "type": "lab",
+    "pos": [52.91, -13.78, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_1",
+    "name": "ASİSTAN ODASI - A315",
+    "type": "office",
+    "pos": [44.92, -14.67, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_2",
+    "name": "DEPO - A313",
+    "type": "warehouse",
+    "pos": [45.62, -11.68, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_3",
+    "name": "ENDÜSTRİ LAB - A316",
+    "type": "lab",
+    "pos": [37.83, -2.99, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_4",
+    "name": "SINIF - A329",
+    "type": "classroom",
+    "pos": [17.67, -13.88, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_5",
+    "name": "MİKRODALGA LAB - A326",
+    "type": "lab",
+    "pos": [16.57, -2.9, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_6",
+    "name": "SINIF - A331",
+    "type": "classroom",
+    "pos": [9.38, -13.78, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_7",
+    "name": "BİLGİSAYAR LAB - A317",
+    "type": "lab",
+    "pos": [37.83, -13.88, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_8",
+    "name": "OFİS - A322",
+    "type": "office",
+    "pos": [28.05, -2.5, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_9",
+    "name": "OFİS - A320",
+    "type": "office",
+    "pos": [30.35, -2.7, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_10",
+    "name": "OFİS - A318",
+    "type": "office",
+    "pos": [32.64, -2.7, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_11",
+    "name": "OFİS - A327",
+    "type": "office",
+    "pos": [23.06, -13.88, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_12",
+    "name": "OFİS - A325",
+    "type": "office",
+    "pos": [25.36, -13.88, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_13",
+    "name": "OFİS - A323",
+    "type": "office",
+    "pos": [27.95, -13.88, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_14",
+    "name": "OFİS - A321",
+    "type": "office",
+    "pos": [30.25, -14.08, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_15",
+    "name": "OFİS - A319",
+    "type": "office",
+    "pos": [32.64, -14.08, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_16",
+    "name": "ASANSÖR - 2",
+    "type": "elevator",
+    "pos": [8.09, -4.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_17",
+    "name": "ELEKTRİK ODASI - A328",
+    "type": "electric_room",
+    "pos": [7.69, -1.7, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_18",
+    "name": "KADIN WC - A330",
+    "type": "restroom",
+    "pos": [2.2, -1.7, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_19",
+    "name": "WC HOLÜ - 2",
+    "type": "connection",
+    "pos": [6.09, -2.8, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_20",
+    "name": "OFİS - A324",
+    "type": "office",
+    "pos": [24.26, -3.09, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_21",
+    "name": "A BLOK MERDİVEN 2",
+    "type": "staircase",
+    "pos": [11.68, -1.4, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_22",
+    "name": "ASANSÖR - 1",
+    "type": "elevator",
+    "pos": [49.22, -4.49, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_23",
+    "name": "WC HOLÜ - 1",
+    "type": "connection",
+    "pos": [55.2, -1.5, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_24",
+    "name": "ERKEK WC - A312A",
+    "type": "restroom",
+    "pos": [53.61, -3.69, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_25",
+    "name": "KADIN WC - A312B",
+    "type": "restroom",
+    "pos": [56.1, -3.89, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_26",
+    "name": "ÇAY OCAĞI - A314",
+    "type": "kitchen",
+    "pos": [49.12, -1.1, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_27",
+    "name": "A BLOK MERDİVEN 1",
+    "type": "staircase",
+    "pos": [45.72, -1.3, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_28",
+    "name": "HOL",
+    "type": "connection",
+    "pos": [52.01, -2.99, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_30",
+    "name": "TEKNİK HACİM - 1",
+    "type": "technical_room",
+    "pos": [56.3, -5.99, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_31",
+    "name": "TEKNİK HACİM - 2",
+    "type": "technical_room",
+    "pos": [6.0, -5.99, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_32",
+    "name": "BLOK HOLÜ",
+    "type": "connection",
+    "pos": [1.8, -13.48, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_33",
+    "name": "Koridor-1",
+    "type": "corridor",
+    "pos": [0.2, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_34",
+    "name": "Koridor-2",
+    "type": "corridor",
+    "pos": [2.3, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_35",
+    "name": "Koridor-3",
+    "type": "corridor",
+    "pos": [4.39, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_36",
+    "name": "Koridor-4",
+    "type": "corridor",
+    "pos": [6.49, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_37",
+    "name": "Koridor-5",
+    "type": "corridor",
+    "pos": [8.49, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_38",
+    "name": "Koridor-6",
+    "type": "corridor",
+    "pos": [10.58, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_39",
+    "name": "Koridor-7",
+    "type": "corridor",
+    "pos": [12.68, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_40",
+    "name": "Koridor-8",
+    "type": "corridor",
+    "pos": [14.77, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_41",
+    "name": "Koridor-9",
+    "type": "corridor",
+    "pos": [16.77, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_42",
+    "name": "Koridor-10",
+    "type": "corridor",
+    "pos": [18.87, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_43",
+    "name": "Koridor-11",
+    "type": "corridor",
+    "pos": [20.96, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_44",
+    "name": "Koridor-12",
+    "type": "corridor",
+    "pos": [23.06, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_45",
+    "name": "Koridor-13",
+    "type": "corridor",
+    "pos": [25.06, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_46",
+    "name": "Koridor-14",
+    "type": "corridor",
+    "pos": [27.15, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_47",
+    "name": "Koridor-15",
+    "type": "corridor",
+    "pos": [29.25, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_48",
+    "name": "Koridor-16",
+    "type": "corridor",
+    "pos": [31.35, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_49",
+    "name": "Koridor-17",
+    "type": "corridor",
+    "pos": [33.34, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_50",
+    "name": "Koridor-18",
+    "type": "corridor",
+    "pos": [35.44, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_51",
+    "name": "Koridor-19",
+    "type": "corridor",
+    "pos": [37.54, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_52",
+    "name": "Koridor-20",
+    "type": "corridor",
+    "pos": [39.53, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_53",
+    "name": "Koridor-21",
+    "type": "corridor",
+    "pos": [41.63, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_54",
+    "name": "Koridor-22",
+    "type": "corridor",
+    "pos": [43.72, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_55",
+    "name": "Koridor-23",
+    "type": "corridor",
+    "pos": [45.82, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_56",
+    "name": "Koridor-24",
+    "type": "corridor",
+    "pos": [47.82, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_57",
+    "name": "Koridor-25",
+    "type": "corridor",
+    "pos": [49.91, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_58",
+    "name": "Koridor-26",
+    "type": "corridor",
+    "pos": [52.01, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_59",
+    "name": "Koridor-27",
+    "type": "corridor",
+    "pos": [54.11, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_60",
+    "name": "Koridor-28",
+    "type": "corridor",
+    "pos": [56.1, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "3_floor_node_61",
+    "name": "Koridor-29",
+    "type": "corridor",
+    "pos": [58.2, -8.59, 9.0],
+    "floor": 3,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_0",
+    "name": "OFİS - A421",
+    "type": "office",
+    "pos": [44.62, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_1",
+    "name": "OFİS - A419",
+    "type": "office",
+    "pos": [47.02, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_2",
+    "name": "OFİS - A417",
+    "type": "office",
+    "pos": [49.22, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_3",
+    "name": "OFİS - A415",
+    "type": "office",
+    "pos": [51.91, -14.97, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_4",
+    "name": "OFİS - A413",
+    "type": "office",
+    "pos": [54.21, -15.07, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_5",
+    "name": "OFİS - A411",
+    "type": "office",
+    "pos": [56.5, -13.78, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_6",
+    "name": "SINIF - A435",
+    "type": "classroom",
+    "pos": [17.67, -13.88, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_7",
+    "name": "SINIF - A422",
+    "type": "classroom",
+    "pos": [17.87, -2.9, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_8",
+    "name": "SINIF - A437",
+    "type": "classroom",
+    "pos": [9.38, -13.78, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_9",
+    "name": "ARGÖR ODASI - A420",
+    "type": "office",
+    "pos": [23.86, -3.19, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_10",
+    "name": "ASANSÖR - 1",
+    "type": "elevator",
+    "pos": [49.22, -4.49, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_11",
+    "name": "WC HOLÜ - 1",
+    "type": "connection",
+    "pos": [55.2, -1.5, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_12",
+    "name": "ERKEK WC - A412A",
+    "type": "restroom",
+    "pos": [53.61, -3.69, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_13",
+    "name": "KADIN WC - A412B",
+    "type": "restroom",
+    "pos": [56.1, -3.89, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_14",
+    "name": "ÇAY OCAĞI - A414",
+    "type": "kitchen",
+    "pos": [49.12, -1.1, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_15",
+    "name": "HOL",
+    "type": "connection",
+    "pos": [52.01, -3.29, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_16",
+    "name": "OFİS - A429",
+    "type": "office",
+    "pos": [27.95, -13.88, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_17",
+    "name": "OFİS - A427",
+    "type": "office",
+    "pos": [30.25, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_18",
+    "name": "OFİS - A425",
+    "type": "office",
+    "pos": [32.64, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_19",
+    "name": "OFİS - A431",
+    "type": "office",
+    "pos": [25.16, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_20",
+    "name": "OFİS - A433",
+    "type": "office",
+    "pos": [22.96, -14.08, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_21",
+    "name": "ASANSÖR - 2",
+    "type": "elevator",
+    "pos": [8.09, -4.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_22",
+    "name": "ELEKTRİK ODASI - A424",
+    "type": "electric_room",
+    "pos": [7.69, -1.7, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_23",
+    "name": "KADIN WC - A426",
+    "type": "restroom",
+    "pos": [2.2, -1.7, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_24",
+    "name": "WC HOLÜ - 2",
+    "type": "connection",
+    "pos": [6.09, -2.8, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_25",
+    "name": "LOUNGE",
+    "type": "lounge",
+    "pos": [29.75, -3.29, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_26",
+    "name": "A BLOK MERDİVEN 2",
+    "type": "staircase",
+    "pos": [11.68, -1.4, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_27",
+    "name": "A BLOK MERDİVEN 1",
+    "type": "staircase",
+    "pos": [45.72, -1.3, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_29",
+    "name": "TEKNİK HACİM - 1",
+    "type": "technical_room",
+    "pos": [56.3, -5.99, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_30",
+    "name": "TEKNİK HACİM - 2",
+    "type": "technical_room",
+    "pos": [0.6, -5.99, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_31",
+    "name": "BLOK HOLÜ",
+    "type": "connection",
+    "pos": [1.8, -13.48, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_32",
+    "name": "OFİS HOLÜ",
+    "type": "connection",
+    "pos": [52.41, -11.78, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_33",
+    "name": "Koridor-1",
+    "type": "corridor",
+    "pos": [0.2, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_34",
+    "name": "Koridor-2",
+    "type": "corridor",
+    "pos": [2.3, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_35",
+    "name": "Koridor-3",
+    "type": "corridor",
+    "pos": [4.39, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_36",
+    "name": "Koridor-4",
+    "type": "corridor",
+    "pos": [6.49, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_37",
+    "name": "Koridor-5",
+    "type": "corridor",
+    "pos": [8.49, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_38",
+    "name": "Koridor-6",
+    "type": "corridor",
+    "pos": [10.58, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_39",
+    "name": "Koridor-7",
+    "type": "corridor",
+    "pos": [12.68, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_40",
+    "name": "Koridor-8",
+    "type": "corridor",
+    "pos": [14.77, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_41",
+    "name": "Koridor-9",
+    "type": "corridor",
+    "pos": [16.77, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_42",
+    "name": "Koridor-10",
+    "type": "corridor",
+    "pos": [18.87, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_43",
+    "name": "Koridor-11",
+    "type": "corridor",
+    "pos": [20.96, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_44",
+    "name": "Koridor-12",
+    "type": "corridor",
+    "pos": [23.06, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_45",
+    "name": "Koridor-13",
+    "type": "corridor",
+    "pos": [25.06, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_46",
+    "name": "Koridor-14",
+    "type": "corridor",
+    "pos": [27.15, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_47",
+    "name": "Koridor-15",
+    "type": "corridor",
+    "pos": [29.25, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_48",
+    "name": "Koridor-16",
+    "type": "corridor",
+    "pos": [31.35, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_49",
+    "name": "Koridor-17",
+    "type": "corridor",
+    "pos": [33.34, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_50",
+    "name": "Koridor-18",
+    "type": "corridor",
+    "pos": [35.44, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_51",
+    "name": "Koridor-19",
+    "type": "corridor",
+    "pos": [37.54, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_52",
+    "name": "Koridor-20",
+    "type": "corridor",
+    "pos": [39.63, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_53",
+    "name": "Koridor-21",
+    "type": "corridor",
+    "pos": [41.63, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_54",
+    "name": "Koridor-22",
+    "type": "corridor",
+    "pos": [43.72, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_55",
+    "name": "Koridor-23",
+    "type": "corridor",
+    "pos": [45.82, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_56",
+    "name": "Koridor-24",
+    "type": "corridor",
+    "pos": [47.92, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_57",
+    "name": "Koridor-25",
+    "type": "corridor",
+    "pos": [49.91, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_58",
+    "name": "Koridor-26",
+    "type": "corridor",
+    "pos": [52.01, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_59",
+    "name": "Koridor-27",
+    "type": "corridor",
+    "pos": [54.11, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_60",
+    "name": "Koridor-28",
+    "type": "corridor",
+    "pos": [56.2, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  },
+  {
+    "id": "4_floor_node_61",
+    "name": "Koridor-29",
+    "type": "corridor",
+    "pos": [58.2, -8.59, 12.0],
+    "floor": 4,
+    "tags": []
+  }
+]
