@@ -151,7 +151,3 @@ Project Website:
 - **Kıvanç Terzioğlu**
 - **Berkay Kaan Karaca**
 ---
-
-## 📄 License
-
-This repository contains the mobile application developed as part of the VAVI Senior Design Project at TED University.
